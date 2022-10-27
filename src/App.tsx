@@ -6,13 +6,13 @@ function App() {
   const [value, setValue] = useState<string>('no')
 
   const onChange = (value: SetStateAction<string>) => {
-    chrome.storage.local.set({ enable: value }, () => {
+    chrome.storage.sync.set({ enable: value }, () => {
       setValue(value)
     });
   }
 
   useEffect(() => {
-    chrome.storage.local.get('enable', (data) => {
+    chrome.storage.sync.get(['enable'], (data) => {
       setValue(data.enable)
     });
   }, [])
