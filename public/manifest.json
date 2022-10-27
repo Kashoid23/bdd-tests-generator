@@ -13,7 +13,21 @@
     "48": "logo192.png",
     "128": "logo192.png"
   },
+  "background": {
+    "scripts": ["./static/js/background.js"]
+  },
+  "content_scripts": [
+    {
+      "matches": [
+        "*://*/*",
+        "file://*/*"
+      ],
+      "js": ["./static/js/content.js"],
+      "run_at": "document_end",
+      "all_frames": true
+    }
+  ],
   "permissions": [
-    "activeTab"
+    "tabs"
   ]
 }
