@@ -1,28 +1,35 @@
 import React  from 'react';
 
-const onSwitch = (enable: string) => {
+const handleSwitch = (enable: string) => {
+  const events: string[] = ['click']
+  const handleEvent = (event: Event) => {
+    console.log('handleEvent:', event)
+  }
+
   switch (enable) {
     case 'yes':
-      document.body.style.background = "black";
-      break;
+      events.forEach((event: string) => {
+        document.addEventListener(event, handleEvent)
+      })
+      break
     case 'no':
-      document.body.style.background = "yellow";
-      break;
+      events.forEach((event: string) => {
+        document.removeEventListener(event, handleEvent)
+      })
+      break
     default:
-      break;
+      break
   }
-};
+}
 
-// Apply changes
+// Init
 chrome.storage.sync.get(['enable'], (data) => {
-  onSwitch(data.enable)
+  console.log('chrome.storage.sync.get', data.enable)
+  handleSwitch(data.enable)
 });
 
-// Watch for changes & apply them
+// Watch for changes
 chrome.storage.onChanged.addListener((changes) => {
-  for (let [key, { oldValue, newValue }] of Object.entries(changes)) {
-    if (key == 'enable') {
-      onSwitch(newValue)
-    }
-  }
+  console.log('chrome.storage.onChanged', changes.enable)
+  handleSwitch(changes.enable.newValue)
 });
