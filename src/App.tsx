@@ -21,7 +21,6 @@ function App() {
     <div className="App">
       <header className="App-header">
         <Switch
-          className="switch"
           on="yes"
           off="no"
           name="switch-chrome-extension"
