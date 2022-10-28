@@ -21,18 +21,32 @@ function App() {
     <div className="App">
       <header className="App-header">
         <Switch
+          className="switch"
           on="yes"
           off="no"
           name="switch-chrome-extension"
           value={value}
           onChange={(value: SetStateAction<string>) => onChange(value)}
           styles={{
-            track: (checked: boolean) => ({
-              backgroundColor: checked ? 'red' : 'blue'
-            }),
-            button: (checked: boolean) => ({
-              backgroundColor: checked ? 'blue' : 'yellow'
-            })
+            track: {
+              borderRadius: '50px',
+            },
+            trackChecked: {
+              borderRadius: '50px',
+            },
+            button: {
+              borderRadius: '50px',
+              width: '36px',
+            },
+            buttonChecked: {
+              borderRadius: '50px',
+              width: '36px',
+              inset: '2px 2px 2px 34px',
+            },
+            container: {
+              width: '72px',
+              height: '36px',
+            },
           }}
         />
       </header>
