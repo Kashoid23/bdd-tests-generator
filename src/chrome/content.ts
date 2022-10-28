@@ -33,3 +33,16 @@ chrome.storage.onChanged.addListener((changes) => {
   console.log('chrome.storage.onChanged', changes.enable)
   handleSwitch(changes.enable.newValue)
 });
+
+// Watch for context menu message
+chrome.runtime.onMessage.addListener((request, sender, sendResponse) => {
+  if (request == "ContextMenuClicked") {
+    const activeElement = document.activeElement
+    if (activeElement) {
+      console.log('')
+      console.log(activeElement)
+      console.log('')
+    }
+    sendResponse("");
+  }
+});

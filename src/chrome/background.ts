@@ -14,15 +14,18 @@ chrome.tabs.onActivated.addListener((tab) => {
   })
 })
 
-// Add context menu item
+// Handle click on context menu
+const handleClickedContextMenu = (info: { frameId: number }, tab: { id: number }) => {
+  chrome.tabs.sendMessage(tab.id, "ContextMenuClicked", { frameId: info.frameId }, data => {
+    // Do nothing
+  });
+}
+
+// Add to context menu
 let contextMenuItem: {} = {
   id: "BDDTG",
-  title: "BDD Tests Generator",
-  contexts: ["all"]
+  title: "Output the DOM element to the web console",
+  contexts: ["all"],
+  onclick: handleClickedContextMenu
 };
 chrome.contextMenus.create(contextMenuItem);
-
-// Watch for context menu clicks
-chrome.contextMenus.onClicked.addListener((clickData) => {
-  console.log("chrome.contextMenus.onClicked", clickData);
-})
