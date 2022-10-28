@@ -28,7 +28,7 @@ chrome.storage.sync.get(['enable'], (data) => {
   handleSwitch(data.enable)
 });
 
-// Watch for changes
+// Watch for storage changes
 chrome.storage.onChanged.addListener((changes) => {
   console.log('chrome.storage.onChanged', changes.enable)
   handleSwitch(changes.enable.newValue)
