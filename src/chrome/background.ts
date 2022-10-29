@@ -1,6 +1,9 @@
 import React  from 'react';
 
-console.log("background connected");
+console.log("BACKGROUND CONNECTED");
+
+
+// STORAGE
 
 // Active tab
 chrome.tabs.onActivated.addListener((tab) => {
@@ -14,6 +17,9 @@ chrome.tabs.onActivated.addListener((tab) => {
   })
 })
 
+
+// CONTEXT MENU
+
 // Handle click on context menu
 const handleClickedContextMenu = (info: { frameId: number }, tab: { id: number }) => {
   chrome.tabs.sendMessage(tab.id, "ContextMenuClicked", { frameId: info.frameId }, data => {
@@ -24,7 +30,7 @@ const handleClickedContextMenu = (info: { frameId: number }, tab: { id: number }
 // Add to context menu
 let contextMenuItem: {} = {
   id: "BDDTG",
-  title: "Output the DOM element to the web console",
+  title: "BDD Generate Test Example",
   contexts: ["all"],
   onclick: handleClickedContextMenu
 };
