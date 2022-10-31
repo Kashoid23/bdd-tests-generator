@@ -1,3 +1,5 @@
+import { copyToClipboard } from "./copyToClipboard";
+
 interface CapybaraExamplesDataResult {
   tag: string;
   id: string;
@@ -102,4 +104,8 @@ export const capybaraExamples = (element: HTMLElement) => {
       `
       break
   }
+}
+
+export const copyToClipboardCapybaraExamples = (element: HTMLElement) => {
+  copyToClipboard(capybaraExamples(element))
 }

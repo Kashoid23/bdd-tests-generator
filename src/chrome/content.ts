@@ -1,4 +1,4 @@
-import { capybaraExamples } from './capybaraExamples'
+import { copyToClipboardCapybaraExamples } from './capybaraExamples'
 
 // STORAGE
 
@@ -43,28 +43,11 @@ document.addEventListener("contextmenu", (event) => {
   clickedElement = event.target as HTMLElement;
 }, true);
 
-const copyToClipboard = (text: string = '') => {
-  // Create a textarea to insert text.
-  let copyFrom = document.createElement("textarea");
-  // Set the textarea content
-  copyFrom.textContent = text;
-  // Append the textarea to the body as a child.
-  document.body.appendChild(copyFrom);
-  // Select all the text
-  copyFrom.select();
-  // Execute command
-  document.execCommand('copy');
-  // De-select the text using blur()
-  copyFrom.blur();
-  // Remove the textarea field from the document.body
-  document.body.removeChild(copyFrom);
-}
-
 chrome.runtime.onMessage.addListener((request, sender, sendResponse) => {
   if (request == "ContextMenuClicked") {
     if (clickedElement) {
       console.clear()
-      copyToClipboard(capybaraExamples(clickedElement))
+      copyToClipboardCapybaraExamples(clickedElement)
       // Array.from(clickedElement.attributes).forEach((attribute) => {
       //   console.log(`${attribute.name}: '${attribute.value}'`)
       // })
