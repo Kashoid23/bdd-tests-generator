@@ -70,7 +70,6 @@ export const capybaraExamples = (element: HTMLElement) => {
           ${capybaraExamplesData(element).name && `uncheck("${capybaraExamplesData(element).name}")`}
           ${capybaraExamplesData(element).name && capybaraContainerExamples(element, `check("${capybaraExamplesData(element).name}")`)}
           ${capybaraExamplesData(element).name && capybaraContainerExamples(element, `uncheck("${capybaraExamplesData(element).name}")`)}
-
         `
         // @ts-ignore
       } else if (element.type == 'radio') {
@@ -102,7 +101,6 @@ export const capybaraExamples = (element: HTMLElement) => {
         ${capybaraExamplesData(element).id && capybaraContainerExamples(element, `find("${capybaraExamplesData(element).id}").click`)}
         ${capybaraExamplesData(element).class && capybaraContainerExamples(element, `find("${capybaraExamplesData(element).class}").click`)}
       `
-      break
   }
 }
 
