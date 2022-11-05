@@ -30,7 +30,7 @@ const handleClickedContextMenu = (info: { frameId: number }, tab: { id: number }
 // Add to context menu
 let contextMenuItem: {} = {
   id: "BDDTG",
-  title: "BDD Generate Test Example",
+  title: "BDD Generate Expect Test Example",
   contexts: ["all"],
   onclick: handleClickedContextMenu
 };

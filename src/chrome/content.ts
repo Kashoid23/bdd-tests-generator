@@ -1,4 +1,5 @@
 import { copyToClipboardCapybaraExamples } from './capybaraExamples'
+import { copyToClipboardCapybaraExpectExamples } from "./capybaraExpectExamples";
 
 // STORAGE
 
@@ -47,7 +48,7 @@ document.addEventListener("contextmenu", (event) => {
 chrome.runtime.onMessage.addListener((request, sender, sendResponse) => {
   if (request == "ContextMenuClicked") {
     if (clickedElement) {
-      copyToClipboardCapybaraExamples(clickedElement)
+      copyToClipboardCapybaraExpectExamples(clickedElement)
       // Array.from(clickedElement.attributes).forEach((attribute) => {
       //   console.log(`${attribute.name}: '${attribute.value}'`)
       // })

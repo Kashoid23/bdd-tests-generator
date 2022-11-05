@@ -1,5 +1,9 @@
 type Selector = string | undefined | null
 
+export const visit = (url: Selector) => url ? (`
+visit "${url}"
+`) : ''
+
 export const clickLink = (selector: Selector) => selector ? (`
 click_link("${selector}")
 `) : ''

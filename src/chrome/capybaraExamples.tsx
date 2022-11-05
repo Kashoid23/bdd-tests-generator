@@ -2,7 +2,7 @@ import { copyToClipboard } from "./copyToClipboard";
 import {
   clickLink, clickButton, check,
   uncheck, choose, findClick,
-  findTextClick, fillInWith, selectFrom, within,
+  findTextClick, fillInWith, selectFrom, within, visit,
 } from "./examples"
 
 interface CapybaraExamplesDataResult {
@@ -48,6 +48,7 @@ export const capybaraExamples = (element: HTMLElement) => {
   switch (element.tagName) {
     case 'A':
       return `
+        ${visit(window.location.href)}
         ${clickLink(capybaraExamplesData(element).content)}
         ${findTextClick({
           selector: capybaraExamplesData(element).class,
@@ -59,6 +60,7 @@ export const capybaraExamples = (element: HTMLElement) => {
       `
     case 'BUTTON':
       return `
+        ${visit(window.location.href)}
         ${clickButton(capybaraExamplesData(element).content)}
         ${findTextClick({
           selector: capybaraExamplesData(element).class,
@@ -72,6 +74,7 @@ export const capybaraExamples = (element: HTMLElement) => {
       // @ts-ignore
       if (element.type == 'checkbox') {
         return `
+          ${visit(window.location.href)}
           ${check(capybaraExamplesData(element).content)}
           ${check(capybaraExamplesData(element).name)}
           ${uncheck(capybaraExamplesData(element).content)}
@@ -82,11 +85,13 @@ export const capybaraExamples = (element: HTMLElement) => {
         // @ts-ignore
       } else if (element.type == 'radio') {
         return `
+          ${visit(window.location.href)}
           ${choose(capybaraExamplesData(element).content)}
           ${choose(capybaraExamplesData(element).name)}
         `
       } else {
         return `
+          ${visit(window.location.href)}
           ${fillInWith({
             selector: capybaraExamplesData(element).name,
             value: capybaraExamplesData(element).value
@@ -109,6 +114,7 @@ export const capybaraExamples = (element: HTMLElement) => {
       }
     case 'SELECT':
       return `
+        ${visit(window.location.href)}
         ${selectFrom({
           option: 'Option',
           selector: capybaraExamplesData(element).placeholder
@@ -122,6 +128,7 @@ export const capybaraExamples = (element: HTMLElement) => {
       `
     default:
       return `
+        ${visit(window.location.href)}
         ${findClick(capybaraExamplesData(element).content)}
         ${findTextClick({
           selector: capybaraExamplesData(element).class,
