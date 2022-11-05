@@ -1,11 +1,12 @@
-import { copyToClipboardCapybaraExamples } from './capybaraExamples'
+import { copyToClipboardCapybaraExamples, capybaraExamples } from './capybaraExamples'
 
 // STORAGE
 
 const handleSwitch = (enable: string) => {
   const events: string[] = ['click']
   const handleEvent = (event: Event) => {
-    console.log('handleSwitchEvent:', event)
+    console.clear()
+    console.log(capybaraExamples(event.target as HTMLElement))
   }
 
   switch (enable) {

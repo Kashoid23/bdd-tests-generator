@@ -21,34 +21,37 @@ function App() {
     <div className="App">
       <header className="App-header">
         {value != 'null' && (
-          <Switch
-            on="yes"
-            off="no"
-            name="switch-chrome-extension"
-            value={value}
-            onChange={(value: SetStateAction<string>) => handleChange(value)}
-            styles={{
-              track: {
-                borderRadius: '50px',
-              },
-              trackChecked: {
-                borderRadius: '50px',
-              },
-              button: {
-                borderRadius: '50px',
-                width: '36px',
-              },
-              buttonChecked: {
-                borderRadius: '50px',
-                width: '36px',
-                inset: '2px 2px 2px 34px',
-              },
-              container: {
-                width: '72px',
-                height: '36px',
-              },
-            }}
-          />
+          <div style={{ display: 'flex', flexDirection: 'column', gap: '10px' }}>
+            <label>Toggle event listener</label>
+            <Switch
+              on="yes"
+              off="no"
+              name="switch-chrome-extension"
+              value={value}
+              onChange={(value: SetStateAction<string>) => handleChange(value)}
+              styles={{
+                track: {
+                  borderRadius: '50px',
+                },
+                trackChecked: {
+                  borderRadius: '50px',
+                },
+                button: {
+                  borderRadius: '50px',
+                  width: '36px',
+                },
+                buttonChecked: {
+                  borderRadius: '50px',
+                  width: '36px',
+                  inset: '2px 2px 2px 34px',
+                },
+                container: {
+                  width: '72px',
+                  height: '36px',
+                },
+              }}
+            />
+          </div>
         )}
       </header>
     </div>

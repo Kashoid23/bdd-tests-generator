@@ -1,4 +1,13 @@
 import { copyToClipboard } from "./copyToClipboard";
+import {
+  clickLink,
+  clickButton,
+  check,
+  uncheck,
+  choose,
+  findClick,
+  findTextClick, fillInWith, selectFrom, within,
+} from "./examples"
 
 interface CapybaraExamplesDataResult {
   tag: string;
@@ -12,7 +21,7 @@ interface CapybaraExamplesDataResult {
 
 function capybaraExamplesData(element: HTMLElement): CapybaraExamplesDataResult {
   return {
-    tag: element.tagName.toLowerCase(),
+    tag: element.tagName ? element.tagName.toLowerCase() : "",
     id: element.id ? `#${element.id}` : "",
     class: element.className.length > 1 ? `.${element.className.split(' ').join('.')}` : element.className,
     name: element.getAttribute("name"),
@@ -22,84 +31,96 @@ function capybaraExamplesData(element: HTMLElement): CapybaraExamplesDataResult 
   }
 }
 
-function capybaraContainerExamples(element: HTMLElement, children: string) {
+function capybaraContainerExamples(element: HTMLElement, child: string) {
   const closestParentDivWithId = element.closest('div[id]') as HTMLElement
   const closestParentDivWithClass = element.closest('div[class]') as HTMLElement
 
-  return `
-    within "div${capybaraExamplesData(closestParentDivWithId).id}" do
-      ${children}
-    end
+  if (child) {
+    return `
+    ${within({ selector: capybaraExamplesData(closestParentDivWithId).id, child: child })}
 
-    within "div${capybaraExamplesData(closestParentDivWithClass).class}" do
-      ${children}
-    end
+    ${within({ selector: capybaraExamplesData(closestParentDivWithClass).class, child: child })}
   `
+  } else {
+    return ''
+  }
 }
 
 export const capybaraExamples = (element: HTMLElement) => {
-  const findAndClickIdOrClassNameCapybaraExamples = `
-    ${capybaraExamplesData(element).id && `find("${capybaraExamplesData(element).id}").click`}
-    ${capybaraExamplesData(element).class && `find("${capybaraExamplesData(element).class}").click`}
-  `
-
   console.log(capybaraExamplesData(element))
 
   switch (element.tagName) {
     case 'A':
       return `
-        ${capybaraExamplesData(element).content && `click_link("${capybaraExamplesData(element).content}")`}
-        ${capybaraExamplesData(element).content && capybaraExamplesData(element).class && `find("${capybaraExamplesData(element).class}", text: "${capybaraExamplesData(element).content}").click`}
-        ${findAndClickIdOrClassNameCapybaraExamples}
-        ${capybaraExamplesData(element).content && capybaraContainerExamples(element, `click_link("${capybaraExamplesData(element).content}")`)}
+        ${clickLink(capybaraExamplesData(element).content)}
+        ${findTextClick({ selector: capybaraExamplesData(element).class, text: capybaraExamplesData(element).content })}
+        ${findClick(capybaraExamplesData(element).id)}
+        ${findClick(capybaraExamplesData(element).class)}
+        ${capybaraContainerExamples(element, clickLink(capybaraExamplesData(element).content))}
       `
     case 'BUTTON':
       return `
-        ${capybaraExamplesData(element).content && `click_button("${capybaraExamplesData(element).content}")`}
-        ${capybaraExamplesData(element).content && capybaraExamplesData(element).class && `find("${capybaraExamplesData(element).class}", text: "${capybaraExamplesData(element).content}").click`}
-        ${findAndClickIdOrClassNameCapybaraExamples}
-        ${capybaraExamplesData(element).content && capybaraContainerExamples(element, `click_button("${capybaraExamplesData(element).content}")`)}
+        ${clickButton(capybaraExamplesData(element).content)}
+        ${findTextClick({ selector: capybaraExamplesData(element).class, text: capybaraExamplesData(element).content })}
+        ${findClick(capybaraExamplesData(element).id)}
+        ${findClick(capybaraExamplesData(element).class)}
+        ${capybaraContainerExamples(element, clickButton(capybaraExamplesData(element).content))}
       `
     case 'INPUT' || 'TEXTAREA':
       // @ts-ignore
       if (element.type == 'checkbox') {
         return `
-          ${capybaraExamplesData(element).content && `check("${capybaraExamplesData(element).content}")`}
-          ${capybaraExamplesData(element).name && `check("${capybaraExamplesData(element).name}")`}
-          ${capybaraExamplesData(element).content && `uncheck("${capybaraExamplesData(element).content}")`}
-          ${capybaraExamplesData(element).name && `uncheck("${capybaraExamplesData(element).name}")`}
-          ${capybaraExamplesData(element).name && capybaraContainerExamples(element, `check("${capybaraExamplesData(element).name}")`)}
-          ${capybaraExamplesData(element).name && capybaraContainerExamples(element, `uncheck("${capybaraExamplesData(element).name}")`)}
+          ${check(capybaraExamplesData(element).content)}
+          ${check(capybaraExamplesData(element).name)}
+          ${uncheck(capybaraExamplesData(element).content)}
+          ${uncheck(capybaraExamplesData(element).name)}
+          ${capybaraContainerExamples(element, check(capybaraExamplesData(element).name))}
+          ${capybaraContainerExamples(element, uncheck(capybaraExamplesData(element).name))}
         `
         // @ts-ignore
       } else if (element.type == 'radio') {
         return `
-          ${capybaraExamplesData(element).content && `choose("${capybaraExamplesData(element).content}")`}
-          ${capybaraExamplesData(element).name && `choose("${capybaraExamplesData(element).name}")`}
+          ${choose(capybaraExamplesData(element).content)}
+          ${choose(capybaraExamplesData(element).name)}
         `
       } else {
         return `
-          ${capybaraExamplesData(element).name && `fill_in("${capybaraExamplesData(element).name}", with: "${capybaraExamplesData(element).value}")`}
-          ${capybaraExamplesData(element).placeholder && `fill_in("${capybaraExamplesData(element).placeholder}", with: "${capybaraExamplesData(element).value}")`}
-          ${findAndClickIdOrClassNameCapybaraExamples}
-          ${capybaraExamplesData(element).name && capybaraContainerExamples(element, `fill_in("${capybaraExamplesData(element).name}", with: "${capybaraExamplesData(element).value}")`)}
-          ${capybaraExamplesData(element).placeholder && capybaraContainerExamples(element, `fill_in("${capybaraExamplesData(element).placeholder}", with: "${capybaraExamplesData(element).value}")`)}
+          ${fillInWith({ selector: capybaraExamplesData(element).name, value: capybaraExamplesData(element).value })}
+          ${fillInWith({
+            selector: capybaraExamplesData(element).placeholder,
+            value: capybaraExamplesData(element).value
+          })}
+          ${findClick(capybaraExamplesData(element).id)}
+          ${findClick(capybaraExamplesData(element).class)}
+          ${capybaraContainerExamples(element, fillInWith({
+            selector: capybaraExamplesData(element).name,
+            value: capybaraExamplesData(element).value
+           }))}
+          ${capybaraContainerExamples(element, fillInWith({
+            selector: capybaraExamplesData(element).placeholder,
+            value: capybaraExamplesData(element).value
+          }))}
         `
       }
     case 'SELECT':
       return `
-        ${capybaraExamplesData(element).placeholder && `select("Option", from: "${capybaraExamplesData(element).placeholder}")`}
-        ${findAndClickIdOrClassNameCapybaraExamples}
-        ${capybaraExamplesData(element).placeholder && capybaraContainerExamples(element, `select("Option", from: "${capybaraExamplesData(element).placeholder}")`)}
+        ${selectFrom({ option: 'Option', selector: capybaraExamplesData(element).placeholder })}
+        ${findClick(capybaraExamplesData(element).id)}
+        ${findClick(capybaraExamplesData(element).class)}
+        ${capybaraContainerExamples(element, selectFrom({
+          option: 'Option',
+          selector: capybaraExamplesData(element).placeholder
+        }))}
       `
     default:
       return `
-        ${capybaraExamplesData(element).content && `find("${capybaraExamplesData(element).content}").click`}
-        ${capybaraExamplesData(element).content && capybaraExamplesData(element).class && `find("${capybaraExamplesData(element).class}", text: "${capybaraExamplesData(element).content}").click`}
-        ${findAndClickIdOrClassNameCapybaraExamples}
-        ${capybaraExamplesData(element).content && capybaraContainerExamples(element, `find("${capybaraExamplesData(element).content}").click`)}
-        ${capybaraExamplesData(element).id && capybaraContainerExamples(element, `find("${capybaraExamplesData(element).id}").click`)}
-        ${capybaraExamplesData(element).class && capybaraContainerExamples(element, `find("${capybaraExamplesData(element).class}").click`)}
+        ${findClick(capybaraExamplesData(element).content)}
+        ${findTextClick({ selector: capybaraExamplesData(element).class, text: capybaraExamplesData(element).content })}
+        ${findClick(capybaraExamplesData(element).id)}
+        ${findClick(capybaraExamplesData(element).class)}
+        ${capybaraContainerExamples(element, findClick(capybaraExamplesData(element).content))}
+        ${capybaraContainerExamples(element, findClick(capybaraExamplesData(element).id))}
+        ${capybaraContainerExamples(element, findClick(capybaraExamplesData(element).class))}
       `
   }
 }
