@@ -1,11 +1,7 @@
 import { copyToClipboard } from "./copyToClipboard";
 import {
-  clickLink,
-  clickButton,
-  check,
-  uncheck,
-  choose,
-  findClick,
+  clickLink, clickButton, check,
+  uncheck, choose, findClick,
   findTextClick, fillInWith, selectFrom, within,
 } from "./examples"
 
@@ -47,7 +43,7 @@ function capybaraContainerExamples(element: HTMLElement, child: string) {
 }
 
 export const capybaraExamples = (element: HTMLElement) => {
-  console.log(capybaraExamplesData(element))
+  console.log("Examples copied to clipboard!")
 
   switch (element.tagName) {
     case 'A':
