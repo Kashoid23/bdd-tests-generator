@@ -43,7 +43,7 @@ function capybaraContainerExamples(element: HTMLElement, child: string) {
 }
 
 export const capybaraExamples = (element: HTMLElement) => {
-  console.log("Examples copied to clipboard!")
+  console.log("Capybara examples copied to clipboard!")
 
   switch (element.tagName) {
     case 'A':

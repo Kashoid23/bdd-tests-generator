@@ -6,7 +6,6 @@ const handleSwitch = (enable: string) => {
   const events: string[] = ['click']
 
   const handleEvent = (event: Event) => {
-    console.clear()
     copyToClipboardCapybaraExamples(event.target as HTMLElement)
   }
 
@@ -48,7 +47,6 @@ document.addEventListener("contextmenu", (event) => {
 chrome.runtime.onMessage.addListener((request, sender, sendResponse) => {
   if (request == "ContextMenuClicked") {
     if (clickedElement) {
-      console.clear()
       copyToClipboardCapybaraExamples(clickedElement)
       // Array.from(clickedElement.attributes).forEach((attribute) => {
       //   console.log(`${attribute.name}: '${attribute.value}'`)
