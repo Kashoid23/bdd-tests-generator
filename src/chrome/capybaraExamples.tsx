@@ -49,7 +49,10 @@ export const capybaraExamples = (element: HTMLElement) => {
     case 'A':
       return `
         ${clickLink(capybaraExamplesData(element).content)}
-        ${findTextClick({ selector: capybaraExamplesData(element).class, text: capybaraExamplesData(element).content })}
+        ${findTextClick({
+          selector: capybaraExamplesData(element).class,
+          text: capybaraExamplesData(element).content
+        })}
         ${findClick(capybaraExamplesData(element).id)}
         ${findClick(capybaraExamplesData(element).class)}
         ${capybaraContainerExamples(element, clickLink(capybaraExamplesData(element).content))}
@@ -57,7 +60,10 @@ export const capybaraExamples = (element: HTMLElement) => {
     case 'BUTTON':
       return `
         ${clickButton(capybaraExamplesData(element).content)}
-        ${findTextClick({ selector: capybaraExamplesData(element).class, text: capybaraExamplesData(element).content })}
+        ${findTextClick({
+          selector: capybaraExamplesData(element).class,
+          text: capybaraExamplesData(element).content
+        })}
         ${findClick(capybaraExamplesData(element).id)}
         ${findClick(capybaraExamplesData(element).class)}
         ${capybaraContainerExamples(element, clickButton(capybaraExamplesData(element).content))}
@@ -81,7 +87,10 @@ export const capybaraExamples = (element: HTMLElement) => {
         `
       } else {
         return `
-          ${fillInWith({ selector: capybaraExamplesData(element).name, value: capybaraExamplesData(element).value })}
+          ${fillInWith({
+            selector: capybaraExamplesData(element).name,
+            value: capybaraExamplesData(element).value
+          })}
           ${fillInWith({
             selector: capybaraExamplesData(element).placeholder,
             value: capybaraExamplesData(element).value
@@ -100,7 +109,10 @@ export const capybaraExamples = (element: HTMLElement) => {
       }
     case 'SELECT':
       return `
-        ${selectFrom({ option: 'Option', selector: capybaraExamplesData(element).placeholder })}
+        ${selectFrom({
+          option: 'Option',
+          selector: capybaraExamplesData(element).placeholder
+        })}
         ${findClick(capybaraExamplesData(element).id)}
         ${findClick(capybaraExamplesData(element).class)}
         ${capybaraContainerExamples(element, selectFrom({
@@ -111,7 +123,10 @@ export const capybaraExamples = (element: HTMLElement) => {
     default:
       return `
         ${findClick(capybaraExamplesData(element).content)}
-        ${findTextClick({ selector: capybaraExamplesData(element).class, text: capybaraExamplesData(element).content })}
+        ${findTextClick({
+          selector: capybaraExamplesData(element).class,
+          text: capybaraExamplesData(element).content
+        })}
         ${findClick(capybaraExamplesData(element).id)}
         ${findClick(capybaraExamplesData(element).class)}
         ${capybaraContainerExamples(element, findClick(capybaraExamplesData(element).content))}
