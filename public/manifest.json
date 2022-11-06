@@ -3,8 +3,8 @@
   "name": "BDD Tests Generator",
   "description": "BDD Tests Generator Chrome Extension",
   "version": "1.0",
-  "manifest_version": 2,
-  "browser_action": {
+  "manifest_version": 3,
+  "action": {
     "default_popup": "index.html",
     "default_title": "BDD Tests Generator"
   },
@@ -13,8 +13,10 @@
     "48": "logo192.png",
     "128": "logo192.png"
   },
+  "minimum_chrome_version": "92",
   "background": {
-    "scripts": ["./static/js/background.js"]
+    "service_worker": "background.js",
+    "type": "module"
   },
   "content_scripts": [
     {
@@ -22,12 +24,15 @@
         "*://*/*",
         "file://*/*"
       ],
-      "js": ["./static/js/content.js"],
+      "js": ["content.js"],
       "run_at": "document_end",
       "all_frames": true
     }
   ],
   "permissions": [
     "tabs", "storage", "contextMenus"
+  ],
+  "host_permissions": [
+    "*://*/*"
   ]
 }

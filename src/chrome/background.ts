@@ -1,7 +1,5 @@
-import React  from 'react';
-
+// @ts-ignore
 console.log("BACKGROUND CONNECTED");
-
 
 // STORAGE
 
@@ -10,28 +8,25 @@ chrome.tabs.onActivated.addListener((tab) => {
   chrome.tabs.get(tab.tabId, currentTabInfo => {
     console.log(currentTabInfo)
 
-    // Disable if tab changed
+    // Disable toggle if tab changed
     chrome.storage.sync.set({ enable: 'no' }, () => {
       // Do nothing
     })
   })
 })
 
-
 // CONTEXT MENU
-
-// Handle click on context menu
-const handleClickedContextMenu = (info: { frameId: number }, tab: { id: number }) => {
-  chrome.tabs.sendMessage(tab.id, "ContextMenuClicked", { frameId: info.frameId }, data => {
-    // Do nothing
-  });
-}
 
 // Add to context menu
 let contextMenuItem: {} = {
   id: "BDDTG",
   title: "BDD Generate Expect Test Example",
   contexts: ["all"],
-  onclick: handleClickedContextMenu
 };
 chrome.contextMenus.create(contextMenuItem);
+
+chrome.contextMenus.onClicked.addListener( (info, tab) => {
+  chrome.tabs.sendMessage(<number>tab?.id, "ContextMenuClicked", { frameId: info.frameId }, data => {
+    // Do nothing
+  });
+});

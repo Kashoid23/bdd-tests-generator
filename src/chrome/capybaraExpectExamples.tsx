@@ -51,14 +51,14 @@ export const capybaraExpectExamples = (element: HTMLElement) => {
       `
     case 'INPUT' || 'TEXTAREA':
       // @ts-ignore
-      if (element.type == 'checkbox') {
+      if (element.type === 'checkbox') {
         return `
           ${expectToHaveSelector(capybaraExpectExamplesData(element).class)}
           ${expectToHaveSelector(capybaraExpectExamplesData(element).id)}
           ${expectToHavePage(window.location.href)}
         `
         // @ts-ignore
-      } else if (element.type == 'radio') {
+      } else if (element.type === 'radio') {
         return `
           ${expectToHaveSelector(capybaraExpectExamplesData(element).class)}
           ${expectToHaveSelector(capybaraExpectExamplesData(element).id)}

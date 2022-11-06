@@ -46,7 +46,7 @@ document.addEventListener("contextmenu", (event) => {
 }, true);
 
 chrome.runtime.onMessage.addListener((request, sender, sendResponse) => {
-  if (request == "ContextMenuClicked") {
+  if (request === "ContextMenuClicked") {
     if (clickedElement) {
       copyToClipboardCapybaraExpectExamples(clickedElement)
       // Array.from(clickedElement.attributes).forEach((attribute) => {

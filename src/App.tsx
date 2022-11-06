@@ -20,7 +20,7 @@ function App() {
   return (
     <div className="App">
       <header className="App-header">
-        {value != 'null' && (
+        {value !== 'null' && (
           <div style={{ display: 'flex', flexDirection: 'column', gap: '10px' }}>
             <label>Toggle event listener</label>
             <Switch

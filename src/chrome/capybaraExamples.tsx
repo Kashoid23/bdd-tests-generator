@@ -16,15 +16,17 @@ interface CapybaraExamplesDataResult {
 }
 
 function capybaraExamplesData(element: HTMLElement): CapybaraExamplesDataResult {
-  return {
+  return element ? ({
     tag: element.tagName ? element.tagName.toLowerCase() : "",
     id: element.id ? `#${element.id}` : "",
     class: element.className.length > 1 ? `.${element.className.split(' ').join('.')}` : element.className,
     name: element.getAttribute("name"),
     content: element.innerText?.trim(),
     placeholder: element.getAttribute("placeholder"),
-    value: element.getAttribute("value"),
-  }
+    value: element.getAttribute("value")
+  }) : (
+    { tag: "", id: "", class: "", name: "", content: "", placeholder: "", value: "" }
+  )
 }
 
 function capybaraContainerExamples(element: HTMLElement, child: string) {
@@ -72,7 +74,7 @@ export const capybaraExamples = (element: HTMLElement) => {
       `
     case 'INPUT' || 'TEXTAREA':
       // @ts-ignore
-      if (element.type == 'checkbox') {
+      if (element.type === 'checkbox') {
         return `
           ${visit(window.location.href)}
           ${check(capybaraExamplesData(element).content)}
@@ -83,7 +85,7 @@ export const capybaraExamples = (element: HTMLElement) => {
           ${capybaraContainerExamples(element, uncheck(capybaraExamplesData(element).name))}
         `
         // @ts-ignore
-      } else if (element.type == 'radio') {
+      } else if (element.type === 'radio') {
         return `
           ${visit(window.location.href)}
           ${choose(capybaraExamplesData(element).content)}
