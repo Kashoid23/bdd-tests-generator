@@ -3,7 +3,7 @@ import {
   uncheck, choose, findClick,
   findTextClick, fillInWith, selectFrom, within, visit,
 } from "./examples"
-import { capybaraExamplesData } from './capybaraElementData'
+import { elementData } from './elementData'
 
 function capybaraContainerExamples(element: HTMLElement, child: string) {
   const closestParentDivWithId = element.closest('div[id]') as HTMLElement
@@ -11,9 +11,9 @@ function capybaraContainerExamples(element: HTMLElement, child: string) {
 
   if (child) {
     return `
-    ${within({ selector: capybaraExamplesData(closestParentDivWithId).id, child: child })}
+    ${within({ selector: elementData(closestParentDivWithId).id, child: child })}
 
-    ${within({ selector: capybaraExamplesData(closestParentDivWithClass).class, child: child })}
+    ${within({ selector: elementData(closestParentDivWithClass).class, child: child })}
   `
   } else {
     return ''
@@ -27,66 +27,66 @@ export const capybaraExamples = (element: HTMLElement) => {
     case 'A':
       return `
         ${visit(window.location.href)}
-        ${clickLink(capybaraExamplesData(element).content)}
+        ${clickLink(elementData(element).content)}
         ${findTextClick({
-          selector: capybaraExamplesData(element).class,
-          text: capybaraExamplesData(element).content
+          selector: elementData(element).class,
+          text: elementData(element).content
         })}
-        ${findClick(capybaraExamplesData(element).id)}
-        ${findClick(capybaraExamplesData(element).class)}
-        ${capybaraContainerExamples(element, clickLink(capybaraExamplesData(element).content))}
+        ${findClick(elementData(element).id)}
+        ${findClick(elementData(element).class)}
+        ${capybaraContainerExamples(element, clickLink(elementData(element).content))}
       `
     case 'BUTTON':
       return `
         ${visit(window.location.href)}
-        ${clickButton(capybaraExamplesData(element).content)}
+        ${clickButton(elementData(element).content)}
         ${findTextClick({
-          selector: capybaraExamplesData(element).class,
-          text: capybaraExamplesData(element).content
+          selector: elementData(element).class,
+          text: elementData(element).content
         })}
-        ${findClick(capybaraExamplesData(element).id)}
-        ${findClick(capybaraExamplesData(element).class)}
-        ${capybaraContainerExamples(element, clickButton(capybaraExamplesData(element).content))}
+        ${findClick(elementData(element).id)}
+        ${findClick(elementData(element).class)}
+        ${capybaraContainerExamples(element, clickButton(elementData(element).content))}
       `
     case 'INPUT' || 'TEXTAREA':
       // @ts-ignore
       if (element.type === 'checkbox') {
         return `
           ${visit(window.location.href)}
-          ${check(capybaraExamplesData(element).content)}
-          ${check(capybaraExamplesData(element).name)}
-          ${uncheck(capybaraExamplesData(element).content)}
-          ${uncheck(capybaraExamplesData(element).name)}
-          ${capybaraContainerExamples(element, check(capybaraExamplesData(element).name))}
-          ${capybaraContainerExamples(element, uncheck(capybaraExamplesData(element).name))}
+          ${check(elementData(element).content)}
+          ${check(elementData(element).name)}
+          ${uncheck(elementData(element).content)}
+          ${uncheck(elementData(element).name)}
+          ${capybaraContainerExamples(element, check(elementData(element).name))}
+          ${capybaraContainerExamples(element, uncheck(elementData(element).name))}
         `
         // @ts-ignore
       } else if (element.type === 'radio') {
         return `
           ${visit(window.location.href)}
-          ${choose(capybaraExamplesData(element).content)}
-          ${choose(capybaraExamplesData(element).name)}
+          ${choose(elementData(element).content)}
+          ${choose(elementData(element).name)}
         `
       } else {
         return `
           ${visit(window.location.href)}
           ${fillInWith({
-            selector: capybaraExamplesData(element).name,
-            value: capybaraExamplesData(element).value
+            selector: elementData(element).name,
+            value: elementData(element).value
           })}
           ${fillInWith({
-            selector: capybaraExamplesData(element).placeholder,
-            value: capybaraExamplesData(element).value
+            selector: elementData(element).placeholder,
+            value: elementData(element).value
           })}
-          ${findClick(capybaraExamplesData(element).id)}
-          ${findClick(capybaraExamplesData(element).class)}
+          ${findClick(elementData(element).id)}
+          ${findClick(elementData(element).class)}
           ${capybaraContainerExamples(element, fillInWith({
-            selector: capybaraExamplesData(element).name,
-            value: capybaraExamplesData(element).value
+            selector: elementData(element).name,
+            value: elementData(element).value
            }))}
           ${capybaraContainerExamples(element, fillInWith({
-            selector: capybaraExamplesData(element).placeholder,
-            value: capybaraExamplesData(element).value
+            selector: elementData(element).placeholder,
+            value: elementData(element).value
           }))}
         `
       }
@@ -95,28 +95,28 @@ export const capybaraExamples = (element: HTMLElement) => {
         ${visit(window.location.href)}
         ${selectFrom({
           option: 'Option',
-          selector: capybaraExamplesData(element).placeholder
+          selector: elementData(element).placeholder
         })}
-        ${findClick(capybaraExamplesData(element).id)}
-        ${findClick(capybaraExamplesData(element).class)}
+        ${findClick(elementData(element).id)}
+        ${findClick(elementData(element).class)}
         ${capybaraContainerExamples(element, selectFrom({
           option: 'Option',
-          selector: capybaraExamplesData(element).placeholder
+          selector: elementData(element).placeholder
         }))}
       `
     default:
       return `
         ${visit(window.location.href)}
-        ${findClick(capybaraExamplesData(element).content)}
+        ${findClick(elementData(element).content)}
         ${findTextClick({
-          selector: capybaraExamplesData(element).class,
-          text: capybaraExamplesData(element).content
+          selector: elementData(element).class,
+          text: elementData(element).content
         })}
-        ${findClick(capybaraExamplesData(element).id)}
-        ${findClick(capybaraExamplesData(element).class)}
-        ${capybaraContainerExamples(element, findClick(capybaraExamplesData(element).content))}
-        ${capybaraContainerExamples(element, findClick(capybaraExamplesData(element).id))}
-        ${capybaraContainerExamples(element, findClick(capybaraExamplesData(element).class))}
+        ${findClick(elementData(element).id)}
+        ${findClick(elementData(element).class)}
+        ${capybaraContainerExamples(element, findClick(elementData(element).content))}
+        ${capybaraContainerExamples(element, findClick(elementData(element).id))}
+        ${capybaraContainerExamples(element, findClick(elementData(element).class))}
       `
   }
 }

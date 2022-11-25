@@ -1,4 +1,4 @@
-interface CapybaraExamplesDataResult {
+interface ElementDataResult {
   tag: string;
   id: string;
   class: string;
@@ -8,7 +8,7 @@ interface CapybaraExamplesDataResult {
   value: string | null;
 }
 
-export function capybaraExamplesData(element: HTMLElement): CapybaraExamplesDataResult {
+export function elementData(element: HTMLElement): ElementDataResult {
   return element ? ({
     tag: element.tagName ? element.tagName.toLowerCase() : "",
     id: element.id ? `#${element.id}` : "",
@@ -22,14 +22,14 @@ export function capybaraExamplesData(element: HTMLElement): CapybaraExamplesData
   )
 }
 
-interface CapybaraExpectExamplesDataResult {
+interface ExpectElementDataResult {
   tag: string;
   id: string;
   class: string;
   content: string | undefined;
 }
 
-export function capybaraExpectExamplesData(element: HTMLElement): CapybaraExpectExamplesDataResult {
+export function expectElementData(element: HTMLElement): ExpectElementDataResult {
   return {
     tag: element.tagName ? element.tagName.toLowerCase() : "",
     id: element.id ? `#${element.id}` : "",

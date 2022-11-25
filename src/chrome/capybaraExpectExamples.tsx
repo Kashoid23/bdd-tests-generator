@@ -5,7 +5,7 @@ import {
   expectToHaveSelectorWithText,
   expectToHaveText
 } from "./expectExamples";
-import { capybaraExpectExamplesData } from './capybaraElementData'
+import { expectElementData } from './elementData'
 
 export const capybaraExpectExamples = (element: HTMLElement) => {
   console.log("Capybara expect examples copied to clipboard!")
@@ -13,23 +13,23 @@ export const capybaraExpectExamples = (element: HTMLElement) => {
   switch (element.tagName) {
     case 'A':
       return `
-        ${expectToHaveLink(capybaraExpectExamplesData(element).content)}
-        ${expectToHaveSelector(capybaraExpectExamplesData(element).class)}
-        ${expectToHaveSelector(capybaraExpectExamplesData(element).id)}
+        ${expectToHaveLink(expectElementData(element).content)}
+        ${expectToHaveSelector(expectElementData(element).class)}
+        ${expectToHaveSelector(expectElementData(element).id)}
         ${expectToHaveSelectorWithText({
-          selector: capybaraExpectExamplesData(element).class,
-          text: capybaraExpectExamplesData(element).content
+          selector: expectElementData(element).class,
+          text: expectElementData(element).content
         })}
         ${expectToHavePage(window.location.href)}
       `
     case 'BUTTON':
       return `
-        ${expectToHaveButton(capybaraExpectExamplesData(element).content)}
-        ${expectToHaveSelector(capybaraExpectExamplesData(element).class)}
-        ${expectToHaveSelector(capybaraExpectExamplesData(element).id)}
+        ${expectToHaveButton(expectElementData(element).content)}
+        ${expectToHaveSelector(expectElementData(element).class)}
+        ${expectToHaveSelector(expectElementData(element).id)}
         ${expectToHaveSelectorWithText({
-          selector: capybaraExpectExamplesData(element).class,
-          text: capybaraExpectExamplesData(element).content
+          selector: expectElementData(element).class,
+          text: expectElementData(element).content
         })}
         ${expectToHavePage(window.location.href)}
       `
@@ -37,38 +37,38 @@ export const capybaraExpectExamples = (element: HTMLElement) => {
       // @ts-ignore
       if (element.type === 'checkbox') {
         return `
-          ${expectToHaveSelector(capybaraExpectExamplesData(element).class)}
-          ${expectToHaveSelector(capybaraExpectExamplesData(element).id)}
+          ${expectToHaveSelector(expectElementData(element).class)}
+          ${expectToHaveSelector(expectElementData(element).id)}
           ${expectToHavePage(window.location.href)}
         `
         // @ts-ignore
       } else if (element.type === 'radio') {
         return `
-          ${expectToHaveSelector(capybaraExpectExamplesData(element).class)}
-          ${expectToHaveSelector(capybaraExpectExamplesData(element).id)}
+          ${expectToHaveSelector(expectElementData(element).class)}
+          ${expectToHaveSelector(expectElementData(element).id)}
           ${expectToHavePage(window.location.href)}
         `
       } else {
         return `
-          ${expectToHaveSelector(capybaraExpectExamplesData(element).class)}
-          ${expectToHaveSelector(capybaraExpectExamplesData(element).id)}
+          ${expectToHaveSelector(expectElementData(element).class)}
+          ${expectToHaveSelector(expectElementData(element).id)}
           ${expectToHavePage(window.location.href)}
         `
       }
     case 'SELECT':
       return `
-        ${expectToHaveSelector(capybaraExpectExamplesData(element).class)}
-        ${expectToHaveSelector(capybaraExpectExamplesData(element).id)}
+        ${expectToHaveSelector(expectElementData(element).class)}
+        ${expectToHaveSelector(expectElementData(element).id)}
         ${expectToHavePage(window.location.href)}
       `
     default:
       return `
-        ${expectToHaveText(capybaraExpectExamplesData(element).content)}
-        ${expectToHaveSelector(capybaraExpectExamplesData(element).class)}
-        ${expectToHaveSelector(capybaraExpectExamplesData(element).id)}
+        ${expectToHaveText(expectElementData(element).content)}
+        ${expectToHaveSelector(expectElementData(element).class)}
+        ${expectToHaveSelector(expectElementData(element).id)}
         ${expectToHaveSelectorWithText({
-          selector: capybaraExpectExamplesData(element).class,
-          text: capybaraExpectExamplesData(element).content
+          selector: expectElementData(element).class,
+          text: expectElementData(element).content
         })}
         ${expectToHavePage(window.location.href)}
       `
