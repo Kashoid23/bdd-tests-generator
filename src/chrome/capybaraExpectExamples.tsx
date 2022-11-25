@@ -1,4 +1,3 @@
-import { copyToClipboard } from "./copyToClipboard";
 import {
   expectToHaveButton,
   expectToHaveLink, expectToHavePage,
@@ -6,22 +5,7 @@ import {
   expectToHaveSelectorWithText,
   expectToHaveText
 } from "./expectExamples";
-
-interface CapybaraExamplesDataResult {
-  tag: string;
-  id: string;
-  class: string;
-  content: string | undefined;
-}
-
-function capybaraExpectExamplesData(element: HTMLElement): CapybaraExamplesDataResult {
-  return {
-    tag: element.tagName ? element.tagName.toLowerCase() : "",
-    id: element.id ? `#${element.id}` : "",
-    class: element.className.length > 1 ? `.${element.className.split(' ').join('.')}` : element.className,
-    content: element.innerText?.trim(),
-  }
-}
+import { capybaraExpectExamplesData } from './capybaraElementData'
 
 export const capybaraExpectExamples = (element: HTMLElement) => {
   console.log("Capybara expect examples copied to clipboard!")
@@ -89,8 +73,4 @@ export const capybaraExpectExamples = (element: HTMLElement) => {
         ${expectToHavePage(window.location.href)}
       `
   }
-}
-
-export const copyToClipboardCapybaraExpectExamples = (element: HTMLElement) => {
-  copyToClipboard(capybaraExpectExamples(element))
 }

@@ -1,33 +1,9 @@
-import { copyToClipboard } from "./copyToClipboard";
 import {
   clickLink, clickButton, check,
   uncheck, choose, findClick,
   findTextClick, fillInWith, selectFrom, within, visit,
 } from "./examples"
-
-interface CapybaraExamplesDataResult {
-  tag: string;
-  id: string;
-  class: string;
-  name: string | null;
-  content: string | undefined;
-  placeholder: string | null;
-  value: string | null;
-}
-
-function capybaraExamplesData(element: HTMLElement): CapybaraExamplesDataResult {
-  return element ? ({
-    tag: element.tagName ? element.tagName.toLowerCase() : "",
-    id: element.id ? `#${element.id}` : "",
-    class: element.className.length > 1 ? `.${element.className.split(' ').join('.')}` : element.className,
-    name: element.getAttribute("name"),
-    content: element.innerText?.trim(),
-    placeholder: element.getAttribute("placeholder"),
-    value: element.getAttribute("value")
-  }) : (
-    { tag: "", id: "", class: "", name: "", content: "", placeholder: "", value: "" }
-  )
-}
+import { capybaraExamplesData } from './capybaraElementData'
 
 function capybaraContainerExamples(element: HTMLElement, child: string) {
   const closestParentDivWithId = element.closest('div[id]') as HTMLElement
@@ -143,8 +119,4 @@ export const capybaraExamples = (element: HTMLElement) => {
         ${capybaraContainerExamples(element, findClick(capybaraExamplesData(element).class))}
       `
   }
-}
-
-export const copyToClipboardCapybaraExamples = (element: HTMLElement) => {
-  copyToClipboard(capybaraExamples(element))
 }

@@ -1,5 +1,7 @@
-import { copyToClipboardCapybaraExamples } from './capybaraExamples'
-import { copyToClipboardCapybaraExpectExamples } from "./capybaraExpectExamples";
+import {
+  copyToClipboardCapybaraExamples,
+  copyToClipboardCapybaraExpectExamples
+} from './copyToClipboard'
 
 // STORAGE
 

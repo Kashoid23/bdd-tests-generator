@@ -1,3 +1,6 @@
+import { capybaraExamples } from "./capybaraExamples";
+import { capybaraExpectExamples } from "./capybaraExpectExamples";
+
 export const copyToClipboard = (text: string = '') => {
   // Create a textarea to insert text.
   let copyFrom = document.createElement("textarea");
@@ -13,4 +16,12 @@ export const copyToClipboard = (text: string = '') => {
   copyFrom.blur();
   // Remove the textarea field from the document.body
   document.body.removeChild(copyFrom);
+}
+
+export const copyToClipboardCapybaraExamples = (element: HTMLElement) => {
+  copyToClipboard(capybaraExamples(element))
+}
+
+export const copyToClipboardCapybaraExpectExamples = (element: HTMLElement) => {
+  copyToClipboard(capybaraExpectExamples(element))
 }
