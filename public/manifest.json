@@ -5,7 +5,6 @@
   "version": "1.1.0",
   "manifest_version": 3,
   "action": {
-    "default_popup": "index.html",
     "default_title": "BDD Tests Generator"
   },
   "icons": {
