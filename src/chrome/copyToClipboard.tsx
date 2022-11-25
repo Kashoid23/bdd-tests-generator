@@ -18,10 +18,14 @@ export const copyToClipboard = (text: string = '') => {
   document.body.removeChild(copyFrom);
 }
 
+const sanitizeExamples = (examples: string[]) => (
+  examples.map(e => e.trim()).filter(e => e !== '').join('\n')
+)
+
 export const copyToClipboardCapybaraExamples = (element: HTMLElement) => {
-  copyToClipboard(capybaraExamples(element))
+  copyToClipboard(sanitizeExamples(capybaraExamples(element)))
 }
 
 export const copyToClipboardCapybaraExpectExamples = (element: HTMLElement) => {
-  copyToClipboard(capybaraExpectExamples(element))
+  copyToClipboard(sanitizeExamples(capybaraExpectExamples(element)))
 }
