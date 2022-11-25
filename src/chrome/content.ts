@@ -5,23 +5,17 @@ import {
 
 // STORAGE
 
+const handleEvent = (event: Event) => {
+  copyToClipboardCapybaraExamples(event.target as HTMLElement)
+}
+
 const handleSwitch = (enable: string) => {
-  const events: string[] = ['click']
-
-  const handleEvent = (event: Event) => {
-    copyToClipboardCapybaraExamples(event.target as HTMLElement)
-  }
-
   switch (enable) {
     case 'yes':
-      events.forEach((event: string) => {
-        document.addEventListener(event, handleEvent)
-      })
+      document.addEventListener('click', handleEvent)
       break
     case 'no':
-      events.forEach((event: string) => {
-        document.removeEventListener(event, handleEvent)
-      })
+      document.removeEventListener('click', handleEvent)
       break
     default:
       break
@@ -37,7 +31,6 @@ chrome.storage.sync.get(['enable'], (data) => {
 chrome.storage.onChanged.addListener((changes) => {
   handleSwitch(changes.enable.newValue)
 });
-
 
 // CONTEXT MENU
 

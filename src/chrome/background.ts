@@ -3,54 +3,55 @@ console.log("BACKGROUND CONNECTED");
 
 // STORAGE
 
-// Active tab
-chrome.tabs.onActivated.addListener((tab) => {
-  chrome.tabs.get(tab.tabId, currentTabInfo => {
-    console.log(currentTabInfo)
-
-    // Disable toggle if tab changed
-    chrome.storage.sync.set({ enable: 'no' }, () => {
-      chrome.action.setBadgeText({
-        text: 'off'
-      }, () => {});
-    })
-  })
+// Set default extension state on install
+chrome.runtime.onInstalled.addListener(() => {
+  setExtensionState({ currentState: 'no' })
 })
 
-const newState = (enable: string) => {
+// Set default extension state on change tab
+chrome.tabs.onActivated.addListener(() => {
+  setExtensionState({ currentState: 'no' })
+})
+
+// Set extension state on click
+chrome.action.onClicked.addListener(() => {
+  chrome.storage.sync.get(['enable'], (data) => {
+    const enabled = data.enable == 'no' ? 'yes' : 'no'
+    setExtensionState({ currentState: enabled })
+  });
+});
+
+const state = (enable: string) => {
   switch (enable) {
     case 'yes':
       return {
-        'enabled': 'no',
-        'text': 'off',
-        'color': '#FF0000'
+        'enabled': 'yes',
+        'text': 'ON',
+        'color': '#008000'
       }
       break
     default:
       return {
-        'enabled': 'yes',
-        'text': 'on',
-        'color': '#008000'
+        'enabled': 'no',
+        'text': 'OFF',
+        'color': '#FF0000'
       }
       break
   }
 }
 
-// On click extension
-chrome.action.onClicked.addListener((tab) => {
-  chrome.storage.sync.get(['enable'], (data) => {
-    chrome.storage.sync.set({ enable: newState(data.enable).enabled }, () => {
-      chrome.action.setBadgeText({
-        text: newState(data.enable).text
-      }, () => {
-        chrome.action.setBadgeBackgroundColor({
-          color: newState(data.enable).color
-        }, () => {});
-      });
+// Set extension state
+const setExtensionState = ({ currentState }: { currentState: string }) => {
+  chrome.storage.sync.set({ enable: state(currentState).enabled }, () => {
+    chrome.action.setBadgeText({
+      text: state(currentState).text
+    }, () => {
+      chrome.action.setBadgeBackgroundColor({
+        color: state(currentState).color
+      }, () => {});
     });
   });
-});
-
+}
 
 // CONTEXT MENU
 
