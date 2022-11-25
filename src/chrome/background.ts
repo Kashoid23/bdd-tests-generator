@@ -58,7 +58,7 @@ const setExtensionState = ({ currentState }: { currentState: string }) => {
 // Add to context menu
 let contextMenuItem: {} = {
   id: "BDDTG",
-  title: "BDD Generate Expect Test Example",
+  title: "BDD Generate Test Expect Example",
   contexts: ["all"],
 };
 chrome.contextMenus.create(contextMenuItem);
