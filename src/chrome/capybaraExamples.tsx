@@ -2,7 +2,7 @@ import {
   clickLink, clickButton, check,
   uncheck, choose, findClick,
   findTextClick, fillInWith, selectFrom, within, visit,
-} from "./examples"
+} from './examples'
 import { elementData } from './elementData'
 
 function capybaraContainerExamples(element: HTMLElement, child: string) {
@@ -20,8 +20,6 @@ function capybaraContainerExamples(element: HTMLElement, child: string) {
 }
 
 export const capybaraExamples = (element: HTMLElement) => {
-  console.log("Capybara examples copied to clipboard!")
-
   switch (element.tagName) {
     case 'A':
       return [

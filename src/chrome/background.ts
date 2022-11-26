@@ -1,5 +1,5 @@
 // @ts-ignore
-console.log("BACKGROUND CONNECTED");
+console.log('BACKGROUND CONNECTED');
 
 // STORAGE
 
@@ -57,15 +57,15 @@ const setExtensionState = ({ currentState }: { currentState: string }) => {
 
 // Add to context menu
 let contextMenuItem: {} = {
-  id: "BDDTG",
-  title: "BDD Generate Test Expect Example",
-  contexts: ["all"],
+  id: 'BDDTG',
+  title: 'BDD Generate Test Expect Example',
+  contexts: ['all'],
 };
 chrome.contextMenus.create(contextMenuItem);
 
 // On click context menu
 chrome.contextMenus.onClicked.addListener( (info, tab) => {
-  chrome.tabs.sendMessage(<number>tab?.id, "ContextMenuClicked", { frameId: info.frameId }, data => {
+  chrome.tabs.sendMessage(<number>tab?.id, 'ContextMenuClicked', { frameId: info.frameId }, data => {
     // Do nothing
   });
 });

@@ -10,15 +10,15 @@ interface ElementDataResult {
 
 export function elementData(element: HTMLElement): ElementDataResult {
   return element ? ({
-    tag: element.tagName ? element.tagName.toLowerCase() : "",
-    id: element.id ? `#${element.id}` : "",
+    tag: element.tagName ? element.tagName.toLowerCase() : '',
+    id: element.id ? `#${element.id}` : '',
     class: element.className.length > 1 ? `.${element.className.split(' ').join('.')}` : element.className,
-    name: element.getAttribute("name"),
+    name: element.getAttribute('name'),
     content: element.innerText?.trim(),
-    placeholder: element.getAttribute("placeholder"),
-    value: element.getAttribute("value")
+    placeholder: element.getAttribute('placeholder'),
+    value: element.getAttribute('value')
   }) : (
-    { tag: "", id: "", class: "", name: "", content: "", placeholder: "", value: "" }
+    { tag: '', id: '', class: '', name: '', content: '', placeholder: '', value: '' }
   )
 }
 
@@ -31,8 +31,8 @@ interface ExpectElementDataResult {
 
 export function expectElementData(element: HTMLElement): ExpectElementDataResult {
   return {
-    tag: element.tagName ? element.tagName.toLowerCase() : "",
-    id: element.id ? `#${element.id}` : "",
+    tag: element.tagName ? element.tagName.toLowerCase() : '',
+    id: element.id ? `#${element.id}` : '',
     class: element.className.length > 1 ? `.${element.className.split(' ').join('.')}` : element.className,
     content: element.innerText?.trim(),
   }

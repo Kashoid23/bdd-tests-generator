@@ -4,11 +4,11 @@ import {
   expectToHaveSelector,
   expectToHaveSelectorWithText,
   expectToHaveText
-} from "./expectExamples";
+} from './expectExamples';
 import { expectElementData } from './elementData'
 
 export const capybaraExpectExamples = (element: HTMLElement) => {
-  console.log("Capybara expect examples copied to clipboard!")
+  window.alert('Capybara expect examples copied to clipboard!');
 
   switch (element.tagName) {
     case 'A':
