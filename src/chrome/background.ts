@@ -6,6 +6,7 @@ console.log('BACKGROUND CONNECTED');
 // Set default extension state on install
 chrome.runtime.onInstalled.addListener(() => {
   setExtensionState({ currentState: 'no' })
+  chrome.storage.sync.set({ examples: [] }, () => {});
 })
 
 // Set default extension state on change tab

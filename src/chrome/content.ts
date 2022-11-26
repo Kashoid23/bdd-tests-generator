@@ -18,10 +18,10 @@ chrome.storage.sync.get(['enable'], (data) => {
 // Watch for storage changes
 chrome.storage.onChanged.addListener((changes: { [p: string]: StorageChange }) => {
   if (changes.enable) {
-    chrome.storage.sync.get(['examples'],(data) => {
-      examples = data.examples
-      onExtensionEnable(changes.enable.newValue)
-    })
+    if (changes.examples) {
+      examples = changes.examples.newValue
+    }
+    onExtensionEnable(changes.enable.newValue)
   }
 })
 
@@ -33,7 +33,6 @@ const onClickListener = (event: Event) => {
 }
 
 const onExtensionEnable = (enable: string) => {
-
   switch (enable) {
     case 'yes':
       document.addEventListener('click', onClickListener)
