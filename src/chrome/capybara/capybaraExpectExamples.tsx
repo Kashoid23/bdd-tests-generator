@@ -5,7 +5,7 @@ import {
   expectToHaveSelectorWithText,
   expectToHaveText
 } from './expectExamples';
-import { expectElementData } from './elementData'
+import { expectElementData } from '../elementData'
 
 export const capybaraExpectExamples = (element: HTMLElement) => {
   window.alert('Capybara expect examples copied to clipboard!');

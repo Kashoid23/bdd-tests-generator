@@ -3,7 +3,7 @@ import {
   uncheck, choose, findClick,
   findTextClick, fillInWith, selectFrom, within, visit,
 } from './examples'
-import { elementData } from './elementData'
+import { elementData } from '../elementData'
 
 function capybaraContainerExamples(element: HTMLElement, child: string) {
   const closestParentDivWithId = element.closest('div[id]') as HTMLElement
@@ -23,7 +23,6 @@ export const capybaraExamples = (element: HTMLElement) => {
   switch (element.tagName) {
     case 'A':
       return [
-        visit(window.location.href),
         clickLink(elementData(element).content),
         findTextClick({
           selector: elementData(element).class,
@@ -35,7 +34,6 @@ export const capybaraExamples = (element: HTMLElement) => {
       ]
     case 'BUTTON':
       return [
-        visit(window.location.href),
         clickButton(elementData(element).content),
         findTextClick({
           selector: elementData(element).class,
@@ -49,7 +47,6 @@ export const capybaraExamples = (element: HTMLElement) => {
       // @ts-ignore
       if (element.type === 'checkbox') {
         return [
-          visit(window.location.href),
           check(elementData(element).content),
           check(elementData(element).name),
           uncheck(elementData(element).content),
@@ -60,13 +57,11 @@ export const capybaraExamples = (element: HTMLElement) => {
         // @ts-ignore
       } else if (element.type === 'radio') {
         return [
-          visit(window.location.href),
           choose(elementData(element).content),
           choose(elementData(element).name)
         ]
       } else {
         return [
-          visit(window.location.href),
           fillInWith({
             selector: elementData(element).name,
             value: elementData(element).value
@@ -89,7 +84,6 @@ export const capybaraExamples = (element: HTMLElement) => {
       }
     case 'SELECT':
       return [
-        visit(window.location.href),
         selectFrom({
           option: 'Option',
           selector: elementData(element).placeholder
@@ -103,7 +97,6 @@ export const capybaraExamples = (element: HTMLElement) => {
       ]
     default:
       return [
-        visit(window.location.href),
         findClick(elementData(element).content),
         findTextClick({
           selector: elementData(element).class,
@@ -116,4 +109,8 @@ export const capybaraExamples = (element: HTMLElement) => {
         ...capybaraContainerExamples(element, findClick(elementData(element).class))
       ]
   }
+}
+
+export const capybaraVisitExample = (href: string) => {
+  return visit(href)
 }
