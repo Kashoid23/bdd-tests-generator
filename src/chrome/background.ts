@@ -5,13 +5,12 @@ console.log('BACKGROUND CONNECTED');
 
 // Set default extension state on install
 chrome.runtime.onInstalled.addListener(() => {
-  setExtensionState({ currentState: 'no' })
-  chrome.storage.sync.set({ examples: [] }, () => {});
+  setDefaultExtensionState()
 })
 
 // Set default extension state on change tab
 chrome.tabs.onActivated.addListener(() => {
-  setExtensionState({ currentState: 'no' })
+  setDefaultExtensionState()
 })
 
 // Set extension state on click
@@ -39,6 +38,12 @@ const state = (enable: string) => {
       }
       break
   }
+}
+
+// Set default extension state
+const setDefaultExtensionState = () => {
+  setExtensionState({ currentState: 'no' })
+  chrome.storage.sync.set({ examples: [] }, () => {});
 }
 
 // Set extension state

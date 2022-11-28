@@ -25,9 +25,11 @@ chrome.storage.onChanged.addListener((changes: { [p: string]: StorageChange }) =
   }
 })
 
-const onClickListener = (event: Event) => {
+const onClickDOMElement = (event: Event) => {
   chrome.storage.sync.get(['examples'],(data) => {
+    // Concatenate with an existing array of examples
     examples = data.examples.concat(sanitizeExamples(capybaraExamples(event.target as HTMLElement)), "\n".repeat(3))
+    // Save the concatenated array of examples to storage
     chrome.storage.sync.set({ examples: examples }, () => {});
   })
 }
@@ -35,16 +37,17 @@ const onClickListener = (event: Event) => {
 const onExtensionEnable = (enable: string) => {
   switch (enable) {
     case 'yes':
-      document.addEventListener('click', onClickListener)
+      document.addEventListener('click', onClickDOMElement)
       break
     case 'no':
-      document.removeEventListener('click', onClickListener)
+      document.removeEventListener('click', onClickDOMElement)
       if (examples.length) {
+        // Save the examples to a file
         const fileName = `${moment().format('YYYY_MM_DD_HH_mm_ss')}.rb`
         const fileType = { type: 'text/plain' }
-
         saveAs(new File(examples, fileName, fileType));
 
+        // Reset storage state
         examples = []
         chrome.storage.sync.set({ examples: [] }, () => {});
       }
