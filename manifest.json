@@ -1,8 +1,8 @@
 {
   "short_name": "BDD TG",
   "name": "BDD Tests Generator",
-  "description": "BDD Tests Generator Chrome Extension",
-  "version": "1.2.2",
+  "description": "Generate BDD tests examples",
+  "version": "1.3.0",
   "manifest_version": 3,
   "action": {
     "default_title": "BDD Tests Generator"

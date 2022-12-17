@@ -1,4 +1,3 @@
-// @ts-ignore
 console.log('BACKGROUND CONNECTED');
 
 // STORAGE
@@ -15,7 +14,7 @@ chrome.tabs.onActivated.addListener(() => {
 
 // Set extension state on click
 chrome.action.onClicked.addListener(() => {
-  chrome.storage.sync.get(['enable'], (data) => {
+  chrome.storage.local.get(['enable'], (data) => {
     const enabled = data.enable == 'no' ? 'yes' : 'no'
     setExtensionState({ currentState: enabled })
   });
@@ -43,12 +42,12 @@ const state = (enable: string) => {
 // Set default extension state
 const setDefaultExtensionState = () => {
   setExtensionState({ currentState: 'no' })
-  chrome.storage.sync.set({ examples: [] }, () => {});
+  chrome.storage.local.set({ examples: [] }, () => {});
 }
 
 // Set extension state
 const setExtensionState = ({ currentState }: { currentState: string }) => {
-  chrome.storage.sync.set({ enable: state(currentState).enabled }, () => {
+  chrome.storage.local.set({ enable: state(currentState).enabled }, () => {
     chrome.action.setBadgeText({
       text: state(currentState).text
     }, () => {

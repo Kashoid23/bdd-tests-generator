@@ -1,8 +1,8 @@
-import moment from 'moment';
+import * as moment from "moment";
 import { saveAs } from 'file-saver';
-import { copyToClipboard } from './copyToClipboard'
+import { copyToClipboard } from './src/copyToClipboard'
 import StorageChange = chrome.storage.StorageChange;
-import { generateExamples, generateExpectExamples, generateVisitExample } from "./generateExamples";
+import { generateExamples, generateExpectExamples, generateVisitExample } from "./src/generateExamples";
 
 // STORAGE
 
@@ -10,7 +10,7 @@ let examples: string[] = []
 const spacer = "\n".repeat(3)
 
 // Get initial state
-chrome.storage.sync.get(['enable', 'examples'], (data) => {
+chrome.storage.local.get(['enable', 'examples'], (data) => {
   if (data.examples) {
     examples = data.examples
   }
@@ -25,11 +25,11 @@ chrome.storage.onChanged.addListener((changes: { [p: string]: StorageChange }) =
 })
 
 const onClickDOMElement = (event: Event) => {
-  chrome.storage.sync.get(['examples'],(data) => {
+  chrome.storage.local.get(['examples'],(data) => {
     // Concatenate with an existing array of examples
     examples = data.examples.concat(generateExamples(event.target as HTMLElement), spacer)
     // Save the concatenated array of examples to storage
-    chrome.storage.sync.set({ examples: examples }, () => {});
+    chrome.storage.local.set({ examples: examples }, () => {});
   })
 }
 
@@ -37,7 +37,7 @@ const onExtensionEnable = (enable: string) => {
   switch (enable) {
     case 'yes':
       // Save start location href to the storage
-      chrome.storage.sync.set({ href: window.location.href }, () => {});
+      chrome.storage.local.set({ href: window.location.href }, () => {});
       // Add a click event listener
       document.addEventListener('click', onClickDOMElement)
       break
@@ -45,7 +45,7 @@ const onExtensionEnable = (enable: string) => {
       // Remove a click event listener
       document.removeEventListener('click', onClickDOMElement)
       if (examples.length) {
-        chrome.storage.sync.get(['href'],(data) => {
+        chrome.storage.local.get(['href'],(data) => {
           // Prepend location href
           examples = [generateVisitExample(data.href), spacer, ...examples]
 
@@ -56,7 +56,7 @@ const onExtensionEnable = (enable: string) => {
 
           // Reset storage
           examples = []
-          chrome.storage.sync.set({
+          chrome.storage.local.set({
             examples: [], href: null
           }, () => {});
         })
