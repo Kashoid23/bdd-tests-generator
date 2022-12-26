@@ -1,6 +1,8 @@
 import { elementClassName } from "./capybara/elementClassName";
 import { elementId } from "./capybara/elemenId";
 
+export interface ClosestParent { id: string | null; class: string | null }
+
 export interface ElementData {
   tag: string;
   id: string | null;
@@ -10,7 +12,7 @@ export interface ElementData {
   placeholder: string | null;
   value: string | null;
   type: string | null;
-  closestParent: { id: string | null; class: string | null; };
+  closestParent: ClosestParent;
 }
 
 export function elementData(element: HTMLElement): ElementData {

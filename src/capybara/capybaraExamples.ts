@@ -3,9 +3,9 @@ import {
   uncheck, choose, findClick,
   findTextClick, fillInWith, selectFrom, within, visit,
 } from './examples'
-import { ElementData } from '../elementData'
+import { ClosestParent, ElementData} from '../elementData'
 
-function capybaraContainerExamples(closestParent: { id: string | null; class: string | null; }, child: string) {
+function capybaraContainerExamples(closestParent: ClosestParent, child: string) {
   if (child) {
     return [
       within({ selector: closestParent.id, child: child }),
