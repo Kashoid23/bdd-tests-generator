@@ -4,17 +4,12 @@ import {
   findTextClick, fillInWith, selectFrom, within, visit,
 } from './examples'
 import { ElementData } from '../elementData'
-import { elementClassName } from "./elementClassName";
-import { elementId } from "./elemenId";
 
-function capybaraContainerExamples(element: HTMLElement, child: string) {
-  const closestParentDivWithId = element.closest('div[id]') as HTMLElement
-  const closestParentDivWithClass = element.closest('div[class]') as HTMLElement
-
+function capybaraContainerExamples(closestParent: { id: string | null; class: string | null; }, child: string) {
   if (child) {
     return [
-      within({ selector: elementId(closestParentDivWithId), child: child }),
-      within({ selector: elementClassName(closestParentDivWithClass), child: child })
+      within({ selector: closestParent.id, child: child }),
+      within({ selector: closestParent.class, child: child })
     ]
   } else {
     return []
@@ -32,7 +27,7 @@ export const capybaraExamples = (elementData: ElementData) => {
         }),
         findClick(elementData.id),
         findClick(elementData.class),
-        ...capybaraContainerExamples(elementData.target, clickLink(elementData.content))
+        ...capybaraContainerExamples(elementData.closestParent, clickLink(elementData.content))
       ]
     case 'BUTTON':
       return [
@@ -43,7 +38,7 @@ export const capybaraExamples = (elementData: ElementData) => {
         }),
         findClick(elementData.id),
         findClick(elementData.class),
-        ...capybaraContainerExamples(elementData.target, clickButton(elementData.content))
+        ...capybaraContainerExamples(elementData.closestParent, clickButton(elementData.content))
       ]
     case 'INPUT' || 'TEXTAREA':
       if (elementData.type === 'checkbox') {
@@ -52,8 +47,8 @@ export const capybaraExamples = (elementData: ElementData) => {
           check(elementData.name),
           uncheck(elementData.content),
           uncheck(elementData.name),
-          ...capybaraContainerExamples(elementData.target, check(elementData.name)),
-          ...capybaraContainerExamples(elementData.target, uncheck(elementData.name))
+          ...capybaraContainerExamples(elementData.closestParent, check(elementData.name)),
+          ...capybaraContainerExamples(elementData.closestParent, uncheck(elementData.name))
         ]
       } else if (elementData.type === 'radio') {
         return [
@@ -72,11 +67,11 @@ export const capybaraExamples = (elementData: ElementData) => {
           }),
           findClick(elementData.id),
           findClick(elementData.class),
-          ...capybaraContainerExamples(elementData.target, fillInWith({
+          ...capybaraContainerExamples(elementData.closestParent, fillInWith({
             selector: elementData.name,
             value: elementData.value
           })),
-          ...capybaraContainerExamples(elementData.target, fillInWith({
+          ...capybaraContainerExamples(elementData.closestParent, fillInWith({
             selector: elementData.placeholder,
             value: elementData.value
           }))
@@ -90,7 +85,7 @@ export const capybaraExamples = (elementData: ElementData) => {
         }),
         findClick(elementData.id),
         findClick(elementData.class),
-        ...capybaraContainerExamples(elementData.target, selectFrom({
+        ...capybaraContainerExamples(elementData.closestParent, selectFrom({
           option: 'Option',
           selector: elementData.placeholder
         }))
@@ -104,9 +99,9 @@ export const capybaraExamples = (elementData: ElementData) => {
         }),
         findClick(elementData.id),
         findClick(elementData.class),
-        ...capybaraContainerExamples(elementData.target, findClick(elementData.content)),
-        ...capybaraContainerExamples(elementData.target, findClick(elementData.id)),
-        ...capybaraContainerExamples(elementData.target, findClick(elementData.class))
+        ...capybaraContainerExamples(elementData.closestParent, findClick(elementData.content)),
+        ...capybaraContainerExamples(elementData.closestParent, findClick(elementData.id)),
+        ...capybaraContainerExamples(elementData.closestParent, findClick(elementData.class))
       ]
   }
 }

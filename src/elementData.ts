@@ -10,11 +10,10 @@ export interface ElementData {
   placeholder: string | null;
   value: string | null;
   type: string | null;
-  target?: HTMLElement;
+  closestParent: { id: string | null; class: string | null; };
 }
 
 export function elementData(element: HTMLElement): ElementData {
-  console.log()
   return element ? ({
     tag: element.tagName,
     id: elementId(element),
@@ -25,8 +24,24 @@ export function elementData(element: HTMLElement): ElementData {
     value: element.getAttribute('value'),
     // @ts-ignore
     type: element.type,
-    target: element,
+    closestParent: {
+      id: elementId(element.closest('div[id]')),
+      class: elementClassName(element.closest('div[class]'))
+    },
   }) : (
-    { tag: '', id: '', class: '', name: '', content: '', placeholder: '', value: '', type: '' }
+    {
+      tag: '',
+      id: '',
+      class: '',
+      name: '',
+      content: '',
+      placeholder: '',
+      value: '',
+      type: '',
+      closestParent: {
+        id: '',
+        class: ''
+      }
+    }
   )
 }
