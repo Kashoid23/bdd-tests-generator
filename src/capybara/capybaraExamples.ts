@@ -4,7 +4,8 @@ import {
   findTextClick, fillInWith, selectFrom, within, visit,
 } from './examples'
 import { ElementData } from '../elementData'
-import { className } from "./className";
+import { elementClassName } from "./elementClassName";
+import { elementId } from "./elemenId";
 
 function capybaraContainerExamples(element: HTMLElement, child: string) {
   const closestParentDivWithId = element.closest('div[id]') as HTMLElement
@@ -12,8 +13,8 @@ function capybaraContainerExamples(element: HTMLElement, child: string) {
 
   if (child) {
     return [
-      within({ selector: closestParentDivWithId.id, child: child }),
-      within({ selector: className(closestParentDivWithClass), child: child })
+      within({ selector: elementId(closestParentDivWithId), child: child }),
+      within({ selector: elementClassName(closestParentDivWithClass), child: child })
     ]
   } else {
     return []

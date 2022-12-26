@@ -1,9 +1,10 @@
-import { className } from "./capybara/className";
+import { elementClassName } from "./capybara/elementClassName";
+import {elementId} from "./capybara/elemenId";
 
 export interface ElementData {
   tag: string;
-  id: string;
-  class: string;
+  id: string | null;
+  class: string | null;
   name: string | null;
   content: string | undefined;
   placeholder: string | null;
@@ -13,10 +14,11 @@ export interface ElementData {
 }
 
 export function elementData(element: HTMLElement): ElementData {
+  console.log()
   return element ? ({
-    tag: element.tagName ? element.tagName.toLowerCase() : '',
-    id: element.id ? `#${element.id}` : '',
-    class: className(element),
+    tag: element.tagName,
+    id: elementId(element),
+    class: elementClassName(element),
     name: element.getAttribute('name'),
     content: element.innerText?.trim(),
     placeholder: element.getAttribute('placeholder'),
