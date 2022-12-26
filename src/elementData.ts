@@ -1,5 +1,5 @@
 import { elementClassName } from "./capybara/elementClassName";
-import {elementId} from "./capybara/elemenId";
+import { elementId } from "./capybara/elemenId";
 
 export interface ElementData {
   tag: string;
