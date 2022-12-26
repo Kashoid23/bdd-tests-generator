@@ -1,4 +1,6 @@
-interface ElementDataResult {
+import { className } from "./capybara/className";
+
+export interface ElementData {
   tag: string;
   id: string;
   class: string;
@@ -6,34 +8,23 @@ interface ElementDataResult {
   content: string | undefined;
   placeholder: string | null;
   value: string | null;
+  type: string | null;
+  target?: HTMLElement;
 }
 
-export function elementData(element: HTMLElement): ElementDataResult {
+export function elementData(element: HTMLElement): ElementData {
   return element ? ({
     tag: element.tagName ? element.tagName.toLowerCase() : '',
     id: element.id ? `#${element.id}` : '',
-    class: element.className.length > 1 ? `.${element.className.split(' ').join('.')}` : element.className,
+    class: className(element),
     name: element.getAttribute('name'),
     content: element.innerText?.trim(),
     placeholder: element.getAttribute('placeholder'),
-    value: element.getAttribute('value')
+    value: element.getAttribute('value'),
+    // @ts-ignore
+    type: element.type,
+    target: element,
   }) : (
-    { tag: '', id: '', class: '', name: '', content: '', placeholder: '', value: '' }
+    { tag: '', id: '', class: '', name: '', content: '', placeholder: '', value: '', type: '' }
   )
-}
-
-interface ExpectElementDataResult {
-  tag: string;
-  id: string;
-  class: string;
-  content: string | undefined;
-}
-
-export function expectElementData(element: HTMLElement): ExpectElementDataResult {
-  return {
-    tag: element.tagName ? element.tagName.toLowerCase() : '',
-    id: element.id ? `#${element.id}` : '',
-    class: element.className.length > 1 ? `.${element.className.split(' ').join('.')}` : element.className,
-    content: element.innerText?.trim(),
-  }
 }

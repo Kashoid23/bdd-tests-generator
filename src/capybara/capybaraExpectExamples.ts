@@ -5,70 +5,68 @@ import {
   expectToHaveSelectorWithText,
   expectToHaveText
 } from './expectExamples';
-import { expectElementData } from '../elementData'
+import { ElementData } from '../elementData'
 
-export const capybaraExpectExamples = (element: HTMLElement) => {
+export const capybaraExpectExamples = (elementData: ElementData) => {
   window.alert('Capybara expect examples copied to clipboard!');
 
-  switch (element.tagName) {
+  switch (elementData.tag) {
     case 'A':
       return [
-        expectToHaveLink(expectElementData(element).content),
-        expectToHaveSelector(expectElementData(element).class),
-        expectToHaveSelector(expectElementData(element).id),
+        expectToHaveLink(elementData.content),
+        expectToHaveSelector(elementData.class),
+        expectToHaveSelector(elementData.id),
         expectToHaveSelectorWithText({
-          selector: expectElementData(element).class,
-          text: expectElementData(element).content
+          selector: elementData.class,
+          text: elementData.content
         }),
         expectToHavePage(window.location.href)
       ]
     case 'BUTTON':
       return [
-        expectToHaveButton(expectElementData(element).content),
-        expectToHaveSelector(expectElementData(element).class),
-        expectToHaveSelector(expectElementData(element).id),
+        expectToHaveButton(elementData.content),
+        expectToHaveSelector(elementData.class),
+        expectToHaveSelector(elementData.id),
         expectToHaveSelectorWithText({
-          selector: expectElementData(element).class,
-          text: expectElementData(element).content
+          selector: elementData.class,
+          text: elementData.content
         }),
         expectToHavePage(window.location.href)
       ]
     case 'INPUT' || 'TEXTAREA':
-      // @ts-ignore
-      if (element.type === 'checkbox') {
+      if (elementData.type === 'checkbox') {
         return [
-          expectToHaveSelector(expectElementData(element).class),
-          expectToHaveSelector(expectElementData(element).id),
+          expectToHaveSelector(elementData.class),
+          expectToHaveSelector(elementData.id),
           expectToHavePage(window.location.href)
         ]
-        // @ts-ignore
-      } else if (element.type === 'radio') {
+      } else if (elementData.type === 'radio') {
         return [
-          expectToHaveSelector(expectElementData(element).class),
-          expectToHaveSelector(expectElementData(element).id),
+          expectToHaveSelector(elementData.class),
+          expectToHaveSelector(elementData.id),
           expectToHavePage(window.location.href)
         ]
       } else {
         return [
-          expectToHaveSelector(expectElementData(element).class),
-          expectToHaveSelector(expectElementData(element).id),
+          expectToHaveSelector(elementData.class),
+          expectToHaveSelector(elementData.id),
           expectToHavePage(window.location.href)
         ]
       }
     case 'SELECT':
       return [
-        expectToHaveSelector(expectElementData(element).class),
-        expectToHaveSelector(expectElementData(element).id),
+        expectToHaveSelector(elementData.class),
+        expectToHaveSelector(elementData.id),
         expectToHavePage(window.location.href)
       ]
     default:
       return [
-        expectToHaveText(expectElementData(element).content),
-        expectToHaveSelector(expectElementData(element).class),
-        expectToHaveSelector(expectElementData(element).id),
+        expectToHaveText(elementData.content),
+        expectToHaveSelector(elementData.class),
+        expectToHaveSelector(elementData.id),
         expectToHaveSelectorWithText({
-          selector: expectElementData(element).class,
-          text: expectElementData(element).content
+          selector: elementData.class,
+          text: elementData.content
         }),
         expectToHavePage(window.location.href)
       ]
