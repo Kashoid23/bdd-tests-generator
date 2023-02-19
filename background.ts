@@ -20,24 +20,11 @@ chrome.action.onClicked.addListener(() => {
   });
 });
 
-const state = (enable: string) => {
-  switch (enable) {
-    case 'yes':
-      return {
-        'enabled': 'yes',
-        'text': 'ON',
-        'color': '#008000'
-      }
-      break
-    default:
-      return {
-        'enabled': 'no',
-        'text': 'OFF',
-        'color': '#FF0000'
-      }
-      break
-  }
-}
+const state = (enable: string) => ({
+  'enabled': enable === 'yes' ? 'yes' : 'no',
+  'text': enable === 'yes' ? 'ON' : 'OFF',
+  'color': enable === 'yes' ? '#008000' : '#FF0000'
+});
 
 // Set default extension state
 const setDefaultExtensionState = () => {

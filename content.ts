@@ -1,6 +1,8 @@
-import * as moment from "moment";
+const moment = require("moment");
+
 import { saveAs } from 'file-saver';
 import { copyToClipboard } from './src/copyToClipboard'
+// TODO: Remove
 import StorageChange = chrome.storage.StorageChange;
 import { generateExamples, generateExpectExamples, generateVisitExample } from "./src/generateExamples";
 
@@ -18,11 +20,17 @@ chrome.storage.local.get(['enable', 'examples'], (data) => {
 });
 
 // Watch for storage changes
-chrome.storage.onChanged.addListener((changes: { [p: string]: StorageChange }) => {
-  if (changes.enable) {
-    onExtensionEnable(changes.enable.newValue)
+// TODO: Remove
+// chrome.storage.onChanged.addListener((changes: { [p: string]: StorageChange }) => {
+//   if (changes.enable) {
+//     onExtensionEnable(changes.enable.newValue)
+//   }
+// })
+chrome.storage.onChanged.addListener(({ enable }) => {
+  if (enable) {
+    onExtensionEnable(enable.newValue);
   }
-})
+});
 
 const onClickDOMElement = (event: Event) => {
   chrome.storage.local.get(['examples'],(data) => {
@@ -47,7 +55,9 @@ const onExtensionEnable = (enable: string) => {
       if (examples.length) {
         chrome.storage.local.get(['href'],(data) => {
           // Prepend location href
-          examples = [generateVisitExample(data.href), spacer, ...examples]
+          // TODO: Remove
+          // examples = [generateVisitExample(data.href), spacer, ...examples]
+          examples.unshift(generateVisitExample(data.href), spacer);
 
           // Save examples to a file
           const fileName = `${moment().format('YYYY_MM_DD_HH_mm_ss')}.rb`
@@ -56,9 +66,11 @@ const onExtensionEnable = (enable: string) => {
 
           // Reset storage
           examples = []
-          chrome.storage.local.set({
-            examples: [], href: null
-          }, () => {});
+          // TODO: Remove
+          // chrome.storage.local.set({
+          //   examples: [], href: null
+          // }, () => {});
+          chrome.storage.local.set({ examples: [], href: null }, () => {});
         })
       }
       break
