@@ -1,11 +1,11 @@
 {
   "short_name": "BDD TG",
-  "name": "BDD Tests Generator",
-  "description": "Generate BDD tests examples",
-  "version": "1.3.0",
+  "name": "AI BDD Tests Generator",
+  "description": "Generate BDD tests examples with OpenAI",
+  "version": "2.0.0",
   "manifest_version": 3,
   "action": {
-    "default_title": "BDD Tests Generator"
+    "default_title": "AI BDD Tests Generator"
   },
   "icons": {
     "16": "logo192.png",

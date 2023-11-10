@@ -13,18 +13,77 @@ chrome.tabs.onActivated.addListener(() => {
 })
 
 // Set extension state on click
-chrome.action.onClicked.addListener(() => {
+chrome.action.onClicked.addListener((tab) => {
   chrome.storage.local.get(['enable'], (data) => {
-    const enabled = data.enable == 'no' ? 'yes' : 'no'
-    setExtensionState({ currentState: enabled })
+    switch (data.enable) {
+      case 'yes':
+        setExtensionState({ currentState: 'no' })
+        break
+      case 'no':
+        chrome.tabs.sendMessage(<number>tab?.id, 'BadgeOnClicked', data => {
+          setExtensionState({ currentState: 'yes' })
+        })
+        break
+      default:
+        break
+    }
   });
 });
 
-const state = (enable: string) => ({
-  'enabled': enable === 'yes' ? 'yes' : 'no',
-  'text': enable === 'yes' ? 'ON' : 'OFF',
-  'color': enable === 'yes' ? '#008000' : '#FF0000'
+chrome.runtime.onMessage.addListener((request, sender) => {
+  switch (request.message) {
+    case 'wait':
+      setExtensionState({ currentState: 'wait' })
+      break
+    case 'error':
+      setExtensionState({ currentState: 'error' })
+      break
+    case 'done':
+      setExtensionState({ currentState: 'no' })
+      break
+    default:
+      break
+  }
 });
+
+const state = (enable: string) => {
+  switch (enable) {
+    case 'yes':
+      return {
+        'enabled': 'yes',
+        'text': 'ON',
+        'color': '#008000',
+        'title': 'Click to turn off BDDTG'
+      }
+      break;
+    case 'no':
+      return {
+        'enabled': 'no',
+        'text': 'OFF',
+        'color': '#D3D3D3',
+        'title': 'Click to turn on BDDTG'
+      }
+      break;
+    case 'wait':
+      return {
+        'enabled': '',
+        'text': 'WAIT',
+        'color': '#0000FF',
+        'title': "Waiting for OpenAI's response..."
+      }
+      break;
+    case 'error':
+      return {
+        'enabled': '',
+        'text': 'ERROR',
+        'color': '#FF0000',
+        'title': 'Something went wrong. Please try again after browser restart.'
+      }
+      break;
+    default:
+      break
+  }
+};
 
 // Set default extension state
 const setDefaultExtensionState = () => {
@@ -40,7 +99,11 @@ const setExtensionState = ({ currentState }: { currentState: string }) => {
     }, () => {
       chrome.action.setBadgeBackgroundColor({
         color: state(currentState).color
-      }, () => {});
+      }, () => {
+        chrome.action.setTitle({
+          title: state(currentState).title
+        })
+      });
     });
   });
 }

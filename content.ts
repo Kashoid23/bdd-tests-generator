@@ -1,15 +1,14 @@
 const moment = require("moment");
+const OpenAI = require("openai");
 
 import { saveAs } from 'file-saver';
 import { copyToClipboard } from './src/copyToClipboard'
-// TODO: Remove
-import StorageChange = chrome.storage.StorageChange;
-import { generateExamples, generateExpectExamples, generateVisitExample } from "./src/generateExamples";
+import { generateExpectExamples } from "./src/generateExamples";
+import { elementData } from "./src/elementData";
 
 // STORAGE
 
 let examples: string[] = []
-const spacer = "\n".repeat(3)
 
 // Get initial state
 chrome.storage.local.get(['enable', 'examples'], (data) => {
@@ -19,13 +18,6 @@ chrome.storage.local.get(['enable', 'examples'], (data) => {
   onExtensionEnable(data.enable)
 });
 
-// Watch for storage changes
-// TODO: Remove
-// chrome.storage.onChanged.addListener((changes: { [p: string]: StorageChange }) => {
-//   if (changes.enable) {
-//     onExtensionEnable(changes.enable.newValue)
-//   }
-// })
 chrome.storage.onChanged.addListener(({ enable }) => {
   if (enable) {
     onExtensionEnable(enable.newValue);
@@ -35,7 +27,7 @@ chrome.storage.onChanged.addListener(({ enable }) => {
 const onClickDOMElement = (event: Event) => {
   chrome.storage.local.get(['examples'],(data) => {
     // Concatenate with an existing array of examples
-    examples = data.examples.concat(generateExamples(event.target as HTMLElement), spacer)
+    examples = data.examples.concat(JSON.stringify(elementData(event.target as HTMLElement)))
     // Save the concatenated array of examples to storage
     chrome.storage.local.set({ examples: examples }, () => {});
   })
@@ -53,24 +45,60 @@ const onExtensionEnable = (enable: string) => {
       // Remove a click event listener
       document.removeEventListener('click', onClickDOMElement)
       if (examples.length) {
-        chrome.storage.local.get(['href'],(data) => {
+        chrome.storage.local.get(['href', 'apiKey'],(data) => {
+          chrome.runtime.sendMessage({ message: 'wait' }, () => {});
+
           // Prepend location href
-          // TODO: Remove
-          // examples = [generateVisitExample(data.href), spacer, ...examples]
-          examples.unshift(generateVisitExample(data.href), spacer);
+          examples.unshift(data.href);
 
-          // Save examples to a file
-          const fileName = `${moment().format('YYYY_MM_DD_HH_mm_ss')}.rb`
-          const fileType = { type: 'text/plain' }
-          saveAs(new File(examples, fileName, fileType));
+          const openai = new OpenAI({
+            apiKey: data.apiKey,
+            dangerouslyAllowBrowser: true,
+          });
+          const chatCompletion = openai.chat.completions.create({
+            messages: [
+              {
+                "role": "system",
+                "content": [
+                  "You are a helpful AI writing assistant for generating best practice system spec BDD tests examples",
+                  "Follow these instructions:",
+                  "Step 1 - The user will provide you step by step DOM event target objects array",
+                  "Step 2 - Analyze the provided array with JSON DOM event target objects",
+                  "Step 3 - First provided array element is visit path, other elements are click events (make sure it covered with Capybara)",
+                  "Step 4 - If DOM event target object do not have uniq searchable content, placeholder, value, id, name or class but has closestParent, we can try to use Capybara within block if we need to",
+                  "Step 5 - Provide ready to use system spec code example with only one 'it' (rspec keyword) block for capybara and rspec-rails gems as a String without anything else",
+                ].join(". ")
+              },
+              {
+                "role": "assistant",
+                "content": "Please provide step by step DOM event target objects array"
+              },
+              {
+                "role": "user",
+                "content": examples.join(". ")
+              }
+            ],
+            model: "gpt-3.5-turbo",
+          });
+          chatCompletion.then((response) => {
+            // Save examples to a file
+            const fileName = `${moment().format('YYYY_MM_DD_HH_mm_ss')}_spec.rb`
+            const fileType = { type: 'text/plain' }
 
-          // Reset storage
-          examples = []
-          // TODO: Remove
-          // chrome.storage.local.set({
-          //   examples: [], href: null
-          // }, () => {});
-          chrome.storage.local.set({ examples: [], href: null }, () => {});
+            saveAs(new File([response.choices[0].message.content], fileName, fileType));
+
+            // Reset storage
+            examples = []
+            chrome.storage.local.set({ examples: [], href: null }, () => {});
+
+            chrome.runtime.sendMessage({ message: 'done' }, () => {});
+          }).catch(() => {
+            // Reset storage
+            examples = []
+            chrome.storage.local.set({ examples: [], href: null, apiKey: null }, () => {});
+
+            chrome.runtime.sendMessage({ message: 'error' }, () => {});
+          })
         })
       }
       break
@@ -88,10 +116,30 @@ document.addEventListener('contextmenu', (event) => {
 }, true);
 
 chrome.runtime.onMessage.addListener((request, sender, sendResponse) => {
-  if (request === 'ContextMenuClicked') {
-    if (clickedElement) {
-      copyToClipboard(generateExpectExamples(clickedElement))
-    }
-    sendResponse('');
+  switch (request) {
+    case 'ContextMenuClicked':
+      if (clickedElement) {
+        copyToClipboard(generateExpectExamples(clickedElement))
+      }
+      sendResponse('');
+      break
+    case 'BadgeOnClicked':
+      chrome.storage.local.get(['apiKey'], (data) => {
+        if (!data.apiKey) {
+          const newApiKey = window.prompt('Enter your Open AI API key:');
+
+          if (newApiKey) {
+            chrome.storage.local.set({ apiKey: newApiKey }, () => {});
+            sendResponse('')
+          } else {
+            chrome.runtime.sendMessage({ message: 'error' }, () => {});
+          }
+        } else {
+          sendResponse('');
+        }
+      })
+      break
+    default:
+      break
   }
 });
