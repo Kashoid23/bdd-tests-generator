@@ -60,15 +60,12 @@ const onExtensionEnable = (enable: string) => {
                 "content": [
                   "You are an AI assistant designed to generate system spec BDD test examples adhering to best practices.",
                   "Follow these instructions:",
-                  "Step 1:",
-                  "The user will provide a step by step array of JSON DOM event target objects.",
+                  "Step 1: The user will provide a step by step array of JSON DOM event target objects.",
                   "The first element is the 'visit' path, and subsequent elements are 'click' events.",
-                  "Step 2:",
-                  "Analyze the provided array.",
-                  "Prioritize provided object attributes: content, id, name (in this order) before spec generation.",
-                  "If no priority attributes or class are found but there's a closestParent, consider using Capybara within block if necessary.",
-                  "Step 3:",
-                  "Provide a formatted system spec code example for Capybara and rspec-rails gems as a string, containing only the necessary code.",
+                  "Step 2: Analyze the provided array.",
+                  "The most suitable array element attributes for interacting the DOM elements are: 'content', 'id', 'name' (in this order).",
+                  "If no suitable array element attributes but there's a 'closestParent', consider using Capybara 'within' block if necessary.",
+                  "Step 3: Provide a formatted system spec code for capybara and rspec-rails gems as a string, containing only the necessary code without anything else.",
                   "Response example:",
                   "require 'rails_helper'",
                   "RSpec.describe 'User visits and interacts with the page', type: :system do",
@@ -77,7 +74,7 @@ const onExtensionEnable = (enable: string) => {
                   "    [put the generated test example here]",
                   "  end",
                   "end"
-                ].join(". ")
+                ].join(" ")
               },
               {
                 "role": "assistant",
