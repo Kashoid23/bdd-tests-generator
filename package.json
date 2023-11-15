@@ -1,6 +1,6 @@
 {
   "name": "bdd-tests-generator",
-  "version": "2.0.0",
+  "version": "2.0.1",
   "private": true,
   "dependencies": {
     "@types/file-saver": "^2.0.5",

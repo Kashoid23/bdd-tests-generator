@@ -36,8 +36,6 @@ const onClickDOMElement = (event: Event) => {
 const onExtensionEnable = (enable: string) => {
   switch (enable) {
     case 'yes':
-      // Save start location href to the storage
-      chrome.storage.local.set({ href: window.location.href }, () => {});
       // Add a click event listener
       document.addEventListener('click', onClickDOMElement)
       break
@@ -60,13 +58,21 @@ const onExtensionEnable = (enable: string) => {
               {
                 "role": "system",
                 "content": [
-                  "You are a helpful AI writing assistant for generating best practice system spec BDD tests examples",
+                  "You are a helpful AI assistant for generating best practice system spec BDD tests examples",
                   "Follow these instructions:",
-                  "Step 1 - The user will provide you step by step DOM event target objects array",
-                  "Step 2 - Analyze the provided array with JSON DOM event target objects",
-                  "Step 3 - First provided array element is visit path, other elements are click events (make sure it covered with Capybara)",
-                  "Step 4 - If DOM event target object do not have uniq searchable content, placeholder, value, id, name or class but has closestParent, we can try to use Capybara within block if we need to",
-                  "Step 5 - Provide ready to use system spec code example with only one 'it' (rspec keyword) block for capybara and rspec-rails gems as a String without anything else",
+                  "Step 1 - The user will provide you step by step JSON DOM event target objects array. ID, name, content attributes (in the same order) are priority for specs if we have any",
+                  "Step 2 - Analyze the provided array",
+                  "Step 3 - First provided array element is visit path, other elements are click events",
+                  "Step 4 - If DOM event target object do not have priority attributes or class but has closestParent, you can try to use Capybara within block if we need to",
+                  "Step 5 - Provide ready to use, formatted, system spec code example for capybara and rspec-rails gems as a String without anything else",
+                  "Response example:",
+                  "require 'rails_helper'",
+                  "RSpec.describe 'User visits and interacts with the page', type: :system do",
+                  "  it 'Navigates to the visit path and interacts with the elements' do",
+                  "    visit '[website link - first element from provided array]'",
+                  "    [put the generated test example here]",
+                  "  end",
+                  "end"
                 ].join(". ")
               },
               {
@@ -107,14 +113,6 @@ const onExtensionEnable = (enable: string) => {
   }
 }
 
-// CONTEXT MENU
-
-let clickedElement: HTMLElement | null = null;
-
-document.addEventListener('contextmenu', (event) => {
-  clickedElement = event.target as HTMLElement;
-}, true);
-
 chrome.runtime.onMessage.addListener((request, sender, sendResponse) => {
   switch (request) {
     case 'ContextMenuClicked':
@@ -126,16 +124,23 @@ chrome.runtime.onMessage.addListener((request, sender, sendResponse) => {
     case 'BadgeOnClicked':
       chrome.storage.local.get(['apiKey'], (data) => {
         if (!data.apiKey) {
-          const newApiKey = window.prompt('Enter your Open AI API key:');
+          const newApiKey = window.prompt('Enter your OpenAI API key:');
 
           if (newApiKey) {
-            chrome.storage.local.set({ apiKey: newApiKey }, () => {});
-            sendResponse('')
-          } else {
-            chrome.runtime.sendMessage({ message: 'error' }, () => {});
+            chrome.storage.local.set({ apiKey: newApiKey }, () => {
+              chrome.runtime.sendMessage({ message: 'enable' }, () => {
+                // Save start location href to the storage
+                chrome.storage.local.set({ href: window.location.href }, () => {});
+                sendResponse('')
+              });
+            });
           }
         } else {
-          sendResponse('');
+          chrome.runtime.sendMessage({ message: 'enable' }, () => {
+            // Save start location href to the storage
+            chrome.storage.local.set({ href: window.location.href }, () => {});
+            sendResponse('')
+          });
         }
       })
       break
@@ -143,3 +148,11 @@ chrome.runtime.onMessage.addListener((request, sender, sendResponse) => {
       break
   }
 });
+
+// CONTEXT MENU
+
+let clickedElement: HTMLElement | null = null;
+
+document.addEventListener('contextmenu', (event) => {
+  clickedElement = event.target as HTMLElement;
+}, true);

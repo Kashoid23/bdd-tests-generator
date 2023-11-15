@@ -21,7 +21,7 @@ chrome.action.onClicked.addListener((tab) => {
         break
       case 'no':
         chrome.tabs.sendMessage(<number>tab?.id, 'BadgeOnClicked', data => {
-          setExtensionState({ currentState: 'yes' })
+          // Do nothing
         })
         break
       default:
@@ -32,6 +32,9 @@ chrome.action.onClicked.addListener((tab) => {
 
 chrome.runtime.onMessage.addListener((request, sender) => {
   switch (request.message) {
+    case 'enable':
+      setExtensionState({ currentState: 'yes' })
+      break
     case 'wait':
       setExtensionState({ currentState: 'wait' })
       break
@@ -88,7 +91,7 @@ const state = (enable: string) => {
 // Set default extension state
 const setDefaultExtensionState = () => {
   setExtensionState({ currentState: 'no' })
-  chrome.storage.local.set({ examples: [] }, () => {});
+  chrome.storage.local.set({ examples: [], href: null, apiKey: null }, () => {});
 }
 
 // Set extension state
