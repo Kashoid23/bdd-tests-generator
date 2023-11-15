@@ -36,12 +36,12 @@ const onClickDOMElement = (event: Event) => {
 const onExtensionEnable = (enable: string) => {
   switch (enable) {
     case 'yes':
-      // Add a click event listener
-      document.addEventListener('click', onClickDOMElement)
+      // Add a mousedown event listener
+      document.addEventListener('mousedown', onClickDOMElement)
       break
     case 'no':
-      // Remove a click event listener
-      document.removeEventListener('click', onClickDOMElement)
+      // Remove a mousedown event listener
+      document.removeEventListener('mousedown', onClickDOMElement)
       if (examples.length) {
         chrome.storage.local.get(['href', 'apiKey'],(data) => {
           chrome.runtime.sendMessage({ message: 'wait' }, () => {});
@@ -66,10 +66,10 @@ const onExtensionEnable = (enable: string) => {
                   "Step 2:",
                   "Analyze the provided array.",
                   "Prioritize provided object attributes: content, id, name (in this order) for analysis and spec generation.",
+                  "Generate appropriate Capybara example depending on the tag attribute.",
                   "If no priority attributes or class are found but there's a closestParent, consider using Capybara within block if necessary.",
                   "Step 3:",
-                  "Provide a formatted system spec code example for Capybara and rspec-rails gems as a string, containing only the necessary code.",
-                  "Response example:",
+                  "Provide a formatted system spec code example for Capybara and rspec-rails gems as a string, containing only the necessary code as in the example below:",
                   "require 'rails_helper'",
                   "RSpec.describe 'User visits and interacts with the page', type: :system do",
                   "  it 'Navigates to the visit path and interacts with the elements' do",
